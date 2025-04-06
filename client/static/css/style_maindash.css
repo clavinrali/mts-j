@@ -57,6 +57,32 @@ body {
     padding: 20px;
 }
 
+button {
+    background-color: #007bff; /* Blue button color */
+    color: #ffffff; /* White text */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 10px 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    transition: all 0.2s ease-in-out; /* Smooth transition for hover effects */
+}
+
+button:hover {
+    background-color: #e55a00; /* Darker blue on hover */
+    border-color: #003f7f; /* Darker border on hover */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Enhance shadow on hover */
+    transform: translateY(-1px); /* Slight lift effect */
+}
+
+button:active {
+    background-color: #003f7f; /* Even darker blue on click */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Reduce shadow on click */
+    transform: translateY(0); /* Reset lift effect */
+}
+
 .control-container {
     display: flex;
     flex-direction: column;
@@ -67,6 +93,25 @@ body {
     border: 1px solid #cccccc; /* Same border as dashboard-container */
     border-radius: 8px; /* Same rounded corners */
     margin-bottom: 20px; /* Add spacing below */
+}
+
+#filter-button, #export-button {
+    background-color: #e55a00; /* Blue button color */
+    color: #ffffff; /* White text */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 10px 15px;
+}
+
+#filter-button:hover, #export-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+#filter-button:active, #export-button:active {
+    background-color: #003f7f; /* Even darker blue on click */
 }
 
 
@@ -136,56 +181,37 @@ body {
     font-weight: bold;
 }
 
+
 .machinery-buttons {
     display: flex;
     gap: 20px;
 }
 
-button, .assign-button {
+/* Assign button styles */
+.assign-button {
     background-color: #007bff; /* Blue button color */
     color: #ffffff; /* White text */
-    border: 1px solid #0056b3; /* Add a border for button feel */
+    border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 14px;
     font-weight: bold;
     padding: 10px 15px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
-    transition: all 0.2s ease-in-out; /* Smooth transition for hover effects */
 }
 
-button:hover, .assign-button:hover {
-    background-color: #e55a00; /* Darker blue on hover */
-    border-color: #003f7f; /* Darker border on hover */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Enhance shadow on hover */
-    transform: translateY(-1px); /* Slight lift effect */
+/* Status indicator styles */
+.status-indicator {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #cccccc; /* Default gray background */
+    color: #000000; /* Black text */
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    cursor: default; /* No pointer cursor for status */
 }
 
-button:active, .assign-button:active {
-    background-color: #003f7f; /* Even darker blue on click */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Reduce shadow on click */
-    transform: translateY(0); /* Reset lift effect */
-}
-
-.machinery-buttons button:hover {
-    background-color: #e55a00; /* Darker orange for hover effect */
-}
-
-.right-panel {
-    position: absolute;
-    top: 56px ;
-    right: 0;
-    width: 230px;
-    height: 100%; /* Adjust height to exclude header */
-    background-color: #f4f4f4; /* Light gray background */
-    border-left: 1px solid #cccccc; /* Light gray border */
-    border-top: 1px solid #cccccc;
-    display: flex;
-    flex-direction: column; /* Ensure children are stacked vertically */
-    align-items: flex-start; /* Align items to the top */
-    justify-content: flex-start; /* Align items to the top */
-    padding: 10px;
-}
 
 .inventory-edit-panel {
     width: 180px;
@@ -257,54 +283,22 @@ button:active, .assign-button:active {
     background-color: #0056b3; /* Darker blue for hover effect */
 }
 
-/* Assign button styles */
-.assign-button {
-    background-color: #007bff; /* Blue button color */
-    color: #ffffff; /* White text */
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-    padding: 10px 15px;
+.right-panel {
+    position: absolute;
+    top: 56px ;
+    right: 0;
+    width: 230px;
+    height: 100%; /* Adjust height to exclude header */
+    background-color: #f4f4f4; /* Light gray background */
+    border-left: 1px solid #cccccc; /* Light gray border */
+    border-top: 1px solid #cccccc;
+    display: flex;
+    flex-direction: column; /* Ensure children are stacked vertically */
+    align-items: flex-start; /* Align items to the top */
+    justify-content: flex-start; /* Align items to the top */
+    padding: 10px;
 }
 
-.assign-button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
-}
-
-/* Status indicator styles */
-.status-indicator {
-    display: inline-block;
-    padding: 10px 15px;
-    background-color: #cccccc; /* Default gray background */
-    color: #000000; /* Black text */
-    border-radius: 5px;
-    font-size: 14px;
-    font-weight: bold;
-    text-align: center;
-    cursor: default; /* No pointer cursor for status */
-}
-
-#filter-button, #export-button {
-    background-color: #e55a00; /* Blue button color */
-    color: #ffffff; /* White text */
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-    padding: 10px 15px;
-    transition: all 0.2s ease-in-out;
-}
-
-#filter-button:hover, #export-button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
-}
-
-#filter-button:active, #export-button:active {
-    background-color: #003f7f; /* Even darker blue on click */
-}
 
 /* Notifications section styles */
 .notifications {
