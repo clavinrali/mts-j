@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Dashboard</title>
+    <link rel="stylesheet" href="static/css/style_maindash.css">
+</head>
+<body>
+    <div class="dashboard">
+        <header class="header">
+            <div class="company-name">ACME Manufacturing Corp</div>
+            <div class="user-panel">
+                <span class="user-name">John Doe</span>
+                <div class="user-bubble">JD</div>
+            </div>
+        </header>
+        <main class="main-content">
+            <div class="control-container">
+                <div class="inventory-edit-panel">
+                    <h3>Inventory Control</h3>
+                    <button id="option1-button">Option 1</button>
+                    <button id="option2-button">Option 2</button>
+                </div>
+            </div>
+            <div class="dashboard-container">
+                <div class="machine-filter-panel">
+                    <h2>Machinery Dashboard</h2>
+                    <div class="button-container">
+                        <button id="filter-button">Filter</button>
+                        <button id="export-button">Export</button>
+                    </div>
+                </div>
+                <div class="machinery-panel">
+                    <div class="machinery-list">
+                        <div class="machinery-item">
+                            Excavator
+                            <div class="machinery-buttons">
+                                <button class="assign-button">Assign</button>
+                                <div class="status-indicator">Status</div>
+                            </div>
+                        </div>
+                        <div class="machinery-item">
+                            Bulldozer
+                            <div class="machinery-buttons">
+                                <button class="assign-button">Assign</button>
+                                <div class="status-indicator">Status</div>
+                            </div>
+                        </div>
+                        <div class="machinery-item">
+                            Crane
+                            <div class="machinery-buttons">
+                                <button class="assign-button">Assign</button>
+                                <div class="status-indicator">Status</div>
+                            </div>
+                        </div>
+                        <div class="machinery-item">
+                            Forklift
+                            <div class="machinery-buttons">
+                                <button class="assign-button">Assign</button>
+                                <div class="status-indicator">Status</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="notifications">
+                    <h3>Notifications</h3>
+                    <ul class="notification-list">
+                        <li class="notification-item">No new notifications</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="static/js/style_maindash.js"></script>
+</body>
+</html>
