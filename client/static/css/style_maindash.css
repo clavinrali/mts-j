@@ -1,4 +1,7 @@
 .main-content {
+    display: flex; /* Use flexbox to align children horizontally */
+    flex-direction: row; /* Ensure horizontal alignment */
+    gap: 10px; /* Add spacing between panels */
     padding: 20px;
 }
 
@@ -262,13 +265,18 @@
     border-radius: 5px;
 }
 
+.left-panel {
+    width: 95%; /* Set width relative to the container */
+    display: inline-block; /* Ensure it stays inline with the right panel */
+}
+
 .right-panel {
-    position: absolute;
-    top: 56px ;
-    right: 0;
-    width: 230px;
-    height: 100%; /* Adjust height to exclude header */
-    background-color: #f4f4f4; /* Light gray background */
+    height: -100%;
+    width: 20%; /* Set width relative to the container */
+    position: relative; /* Change from absolute to relative for better responsiveness */
+    top: -20px ;
+    right: -1%;
+    background-color: #c7c7c7; /* Light gray background */
     border-left: 1px solid #cccccc; /* Light gray border */
     border-top: 1px solid #cccccc;
     display: flex;
@@ -278,17 +286,15 @@
     padding: 10px;
 }
 
-
 /* Notifications section styles */
 .notifications {
-    width: 100%;
-    margin-top: 20px;
+    width: 90%; /* Set width relative to the right-panel */
+    max-width: none; /* Remove fixed max-width */
     background-color: #ffffff; /* White background for notifications */
     border: 1px solid #cccccc; /* Light gray border */
     border-radius: 8px; /* Rounded corners */
     padding: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    max-width: calc(230px - 20px); /* Match the inner width of the right panel (width - padding) */
 }
 
 .notifications h3 {
