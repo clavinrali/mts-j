@@ -1,0 +1,5 @@
+Django>3.0,<=5.1.7
+pymysql
+mysqlclient
+dj-database-url
+Pillow
