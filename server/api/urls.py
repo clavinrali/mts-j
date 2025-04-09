@@ -4,10 +4,6 @@ from . import views
 
 app_name = "api"
 urlpatterns = [
-    path("", views.index, name="index"), # Show the index page
-    path("index.html", views.index, name="index"), # Show the index page
-    path('login/', views.user_login, name='login'), # Login Page
-    path('logout/', views.user_logout, name='logout'), # Dashboard Page ***
     path("statistic/", views.statistic, name="statistic"), # Statistics page
     path("create_user/", views.create_user, name="create_user"), # Create User Page ***
     path("employees/", views.get_employees, name="get_employees"), # Select Employee

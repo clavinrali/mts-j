@@ -1,15 +1,21 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+#from api.models import Machine, Case
+from django.contrib.auth import authenticate, login as auth_login
 
-# Create your views here.
 
 def login(request):
-    """Render the login page. Redirect authenticated users to the home page."""
-    ctx = {
-    }
-    return render(request, "login.html", context=ctx)
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            auth_login(request, user)
+            return redirect('machine:dashboard')
+        else:
+            return render(request, "login.html", {'error': 'Invalid username or password'})
+    return render(request, "login.html")
 
-def manager_dashboard(request):
-    """Render the manager dashboard."""
+def dashboard(request):
     ctx = {
     }
-    return render(request, "manager_dashboard.html", context=ctx)
+    return render(request, "manager_dash.html", context=ctx)

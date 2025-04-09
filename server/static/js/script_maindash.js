@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // ...existing code...
     const userPanel = document.querySelector('.user-panel');
     const dropdownMenu = document.querySelector('.dropdown-menu');
 

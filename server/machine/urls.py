@@ -6,9 +6,7 @@ app_name = "machine"
 urlpatterns = [
     # GENERAL PAGES
 
-    # Login page (renders the login form)
-    path("", views.login, name="login"),
-    path("login.html", views.login, name="login"),
-    # Main dashboard/home page
-    path("dashboard/manager_dashboard.html", views.manager_dashboard, name="manager_dashboard"),
+    path("", views.login, name="index"),
+    path("login/", views.login, name='login'),
+    path("dashboard/", views.dashboard, name="dashboard"),
 ]

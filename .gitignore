@@ -7,3 +7,4 @@ staticfiles/*
 venv
 db.sqlite3
 project-export.zip
+.vscode
