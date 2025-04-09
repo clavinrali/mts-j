@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from the .env file
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +30,7 @@ SECRET_KEY = 'django-insecure-*tma$tc+v^=t0%t6@$@--bo0gk348$^w-4y0$bf&+*9yj!*=@a
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "0.0.0.0", "172.19.0.3"]
 
 
 # Application definition
@@ -38,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'api',
+    'machine',
 ]
 
 MIDDLEWARE = [
@@ -76,14 +82,14 @@ WSGI_APPLICATION = 'server.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',  # Change the engine to MySQL
-        'NAME': 'my_database',
-        'USER': 'username',
-        'PASSWORD': 'password',
-        'HOST': 'host.docker.internal', # Use "localhost" if you are on a Linux machine but change with "host.docker.internal" if you are on Windows or Mac
-        'PORT': '3306',
+        'ENGINE': os.getenv('DB_ENGINE', 'django.db.backends.mysql'),
+        'NAME': os.getenv('DB_NAME', 'my_database'),
+        'USER': os.getenv('DB_USER', 'my_user'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'my_password'),
+        'HOST': os.getenv('DB_HOST', 'mysql_db'),
+        'PORT': os.getenv('DB_PORT', '3306'),
         'OPTIONS': {
-            'charset': 'utf8mb4',
+            'charset': os.getenv('DB_CHARSET', 'utf8mb4'),
         }
     }
 }

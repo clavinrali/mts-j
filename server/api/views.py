@@ -193,6 +193,28 @@ def add_warning(request, mid):
 
     return JsonResponse({"success": False, "message": "Invalid request"}, status=400)
 
+def delete_warning(request, mid, wid):
+    if request.method == 'DELETE':
+        # get machine
+        machine = Machine.objects.get(id=mid)
+        # get warning
+        warning = Warning.objects.get(id=wid)
+        # delete warning
+        machine.warnings.remove(warning)
+
+        # check if machine has warnings
+        if (machine.warnings.count() > 0):
+            # set machine status to warning
+            machine.status = "warning"
+        else:
+            # set machine status to ok
+            machine.status = "ok"
+        machine.save()
+
+        return JsonResponse({"success": True, "message": "Warning deleted successfully"}, status=200)
+
+    return JsonResponse({"success": False, "message": "Invalid request"}, status=400)
+
 def set_employee(request, mid, eid):
     if request.method == 'POST':
         # get machine

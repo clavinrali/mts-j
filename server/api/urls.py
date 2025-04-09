@@ -23,6 +23,6 @@ urlpatterns = [
     path("case/", views.get_cases, name="get_cases"), # Case History Page
     path("case/create/", views.create_case, name="create_case"), # Case Creation Page
     path("case/<int:cid>/", views.case_details, name="case_details"), # Case Display dashboard
-    path("case/<int:cid>/close/", views.case_close, name="case_close"), # 
+    path("case/<int:cid>/close/", views.case_close, name="case_close"), #
     path("case/<int:cid>/add_comment/", views.add_comment, name="add_comment"), # Add Comment Page ***
 ]
