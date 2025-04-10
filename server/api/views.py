@@ -4,9 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 import json
-
 from .models import Case, Machine, Comment
-from .forms import CaseForm, MachineForm
 
 def index(request):
     ctx = {}
@@ -80,7 +78,7 @@ def create_user(request):
 
 def get_employees(request):
     if request.method == 'GET':
-        # get technician employees
+        # get person employees
         employees = User.objects.filter(is_staff=False, is_superuser=False)
         employee_list = [{"id": employee.user.id, "username": employee.user.username} for employee in employees]
         return JsonResponse({"success": False, "message": employee_list}, safe=False, status=200)
@@ -96,7 +94,7 @@ def get_machines(request):
                          "last_service": machine.last_service,
                          "location": machine.location,
                          "priority": machine.priority,
-                         "assigned": machine.technician if machine.technician else None,
+                         "assigned": machine.person if machine.person else None,
                          "status": machine.status} for machine in machines]
         return JsonResponse({"success": True, "message": machine_list}, safe=False, status=200)
 
@@ -126,13 +124,13 @@ def create_machine(request):
 def get_machines_by_user(request, uid):
     if request.method == 'GET':
         # get machines by user
-        machines = Machine.objects.filter(technician=uid)
+        machines = Machine.objects.filter(person=uid)
         # format the machine list
         machine_list = [{"name": machine.name,
                          "last_service": machine.last_service,
                          "location": machine.location,
                          "priority": machine.priority,
-                         "assigned": machine.technician if machine.technician else None,
+                         "assigned": machine.person if machine.person else None,
                          "status": machine.status,
                          "current_case": machine.current_case if machine.current_case else None,
                          } for machine in machines]
@@ -222,7 +220,7 @@ def set_employee(request, mid, eid):
         # get employee
         employee = User.objects.get(id=eid)
         # set employee to machine
-        machine.technician = employee
+        machine.person = employee
         machine.save()
 
         return JsonResponse({"success": True, "message": "Employee set successfully"}, status=200)
@@ -253,12 +251,12 @@ def create_case(request):
         if Case.objects.filter(title=title).exists():
             return JsonResponse({"success": False, "message": "Case already exists"}, status=400)
 
-        # get technician and machine
-        technician = User.objects.get(id=id_technician)
+        # get person and machine
+        person = User.objects.get(id=id_technician)
         machine = Machine.objects.get(id=id_machine)
 
         # create case
-        case = Case.objects.create(technician=technician, machine=machine, title=title, technician_note=technician_note, technician_image=technician_image)
+        case = Case.objects.create(person=person, machine=machine, title=title, technician_note=technician_note, technician_image=technician_image)
         case.active = True
         case.save()
 
@@ -297,7 +295,7 @@ def case_close(request, cid):
             # set machine status to ok
             machine.status = "ok"
         machine.current_case = None
-        machine.technician = None
+        machine.person = None
         machine.save()
 
         return JsonResponse({"success": True, "message": "Case closed successfully"}, status=200)

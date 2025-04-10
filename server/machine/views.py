@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
-#from api.models import Machine, Case
+from api.models import Profile
 from django.contrib.auth import authenticate, login as auth_login
-
 
 def login(request):
     if request.method == 'POST':
