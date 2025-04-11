@@ -4,20 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Main Dashboard</title>
+    <title>{% block title %}Main Dashboard{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/style_base.css' %}">
-    <link rel="stylesheet" href="{% static 'css/style_maindash.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style_dashboard.css' %}">
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
     <div class="dashboard">
         <header class="header">
             <div class="company-name">ACME Manufacturing Corp</div>
             <div class="user-panel">
-                <span class="user-name">John Doe</span>
-                <div class="user-bubble">JD</div>
+                <span class="user-name">{{ request.user.get_full_name }}</span>
+                <div class="user-bubble">
+                    {{ request.user.first_name|slice:":1" }}{{ request.user.last_name|slice:":1" }}
+                </div>
                 <div class="dropdown-menu">
                     <ul>
-                        <li id="logout-item">Logout</li>
+                        <li id="logout-item"><a href="{% url 'machine:logout' %}">Logout</a></li>
                     </ul>
                 </div>
             </div>
@@ -25,22 +28,13 @@
         <main class="main-content">
             <div class="left-panel">
                 <div class="control-container">
-                    <div class="item-container-panel">
-                        <h3>Inventory Control</h3>
-                        <button id="option1-button">Add New Machine</button>
-                        <button id="option2-button">Delete Machines</button>
-                    </div>
-                    <div class="item-container-panel">
-                        <button id="option1-button">Statistics</button>
-                        <button id="option2-button">View Case History</button>
-                    </div>
+                    {% block control_container %} {% endblock %}
                 </div>
                 <div class="dashboard-container">
                     <div class="machine-filter-panel">
                         <h2>Machinery Dashboard</h2>
                         <div class="button-container">
-                            <button id="filter-button">Filter</button>
-                            <button id="export-button">Export</button>
+                            {% block control_button_container %} {% endblock %}
                         </div>
                     </div>
                     <div class="machinery-panel">
@@ -51,15 +45,10 @@
                 </div>
             </div>
             <div class="right-panel">
-                <div class="notifications">
-                    <h3>Notifications</h3>
-                    <ul class="notification-list">
-                        <li class="notification-item">No new notifications</li>
-                    </ul>
-                </div>
+                {% block right_panel_container %} {% endblock %}
             </div>
         </main>
     </div>
-    <script src="{% static 'js/script_maindash.js' %}"></script>
+    {% block userdashboard_script %} {% endblock %}
 </body>
 </html>

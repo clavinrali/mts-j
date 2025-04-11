@@ -1,0 +1,42 @@
+{% extends "base_dashboard.html" %}
+{% load static %}
+
+{% block title %}Manager Dashboard{% endblock %}
+
+{% block control_container %}
+<div class="item-container-panel">
+    <h3>Task History</h3>
+    <button id="option1-button">Add New Machine</button>
+</div>
+<div class="item-container-panel">
+    <h3>{{ request.user.profile.role }} Controls</h3>
+    <button id="option2-button">View Case History</button>
+</div>
+{% endblock %}
+
+{% block control_button_container %}
+<button id="filter-button">Filter</button>
+<button id="export-button">Export</button>
+{% endblock %}
+
+
+{% block right_panel_container %} 
+<div class="notifications">
+    <h3>Notifications</h3>
+    <ul class="notification-list">
+        <li class="notification-item">No new notifications</li>
+    </ul>
+</div>
+{% endblock %}
+
+
+
+{% block userdashboard_script %} 
+{% if request.user.profile.role == "Technician" %}
+<script src="{% static 'js/script_technician.js' %}"></script>
+{% elif request.user.profile.role == "Repair" %}
+<script src="{% static 'js/script_repairperson.js' %}"></script>
+{% else %}
+<script src="{% static 'js/script_maindash.js' %}"></script>
+{% endif %}
+{% endblock %}

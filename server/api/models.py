@@ -10,7 +10,7 @@ class Profile(models.Model):
         ('Technician', 'Technician'),
         ('Repair', 'Repair'),
     ]
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='profiles')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     date_of_birth = models.DateField(null=True, blank=True)
     role = models.CharField(max_length=100, choices=ROLE_CHOICES, null=True, blank=True)
 
@@ -66,6 +66,22 @@ class Machine(models.Model):
 
     class Meta:
         ordering = ['name']
+
+class Task(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('in_progress', 'In Progress'),
+        ('completed', 'Completed'),
+    ]
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tasks')
+    machine = models.ForeignKey(Machine, on_delete=models.CASCADE, to_field='unique_machine_id', related_name='tasks')
+    assigned_date = models.DateField(auto_now_add=True)
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='pending')
+    completed_date = models.DateField(null=True, blank=True)
+    assignee = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='assigned_tasks')
+
+    def __str__(self):
+        return f"Task for {self.user.username} on {self.machine.name} assigned on {self.assigned_date} - Status: {self.status}"
 
 @receiver(post_migrate)
 def populate_initial_machines(sender, **kwargs):

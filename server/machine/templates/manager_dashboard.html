@@ -1,0 +1,58 @@
+{% extends "base_dashboard.html" %}
+{% load static %}
+
+{% block title %}Manager Dashboard{% endblock %}
+
+{% block control_container %}
+<div class="item-container-panel">
+    <h3>Inventory Control</h3>
+    <button id="option1-button">Add New Machine</button>
+    <button id="option2-button">Delete Machines</button>
+</div>
+<div class="item-container-panel">
+    <h3>Manager Controls</h3>
+    <button id="option1-button">Statistics</button>
+    <button id="option2-button">View Case History</button>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="left-panel">
+    <div class="control-container">
+        <div class="item-container-panel">
+            <h3>Manager Controls</h3>
+            <button id="option1-button">View Reports</button>
+            <button id="option2-button">Manage Users</button>
+        </div>
+    </div>
+</div>
+<div class="right-panel">
+    <div class="notifications">
+        <h3>Notifications</h3>
+        <ul class="notification-list">
+            <li class="notification-item">No new notifications</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
+
+{% block control_button_container %}
+<button id="filter-button">Filter</button>
+<button id="export-button">Export</button>
+{% endblock %}
+
+
+{% block right_panel_container %} 
+<div class="notifications">
+    <h3>Notifications</h3>
+    <ul class="notification-list">
+        <li class="notification-item">No new notifications</li>
+    </ul>
+</div>
+{% endblock %}
+
+
+
+{% block userdashboard_script %} 
+<script src="{% static 'js/script_manager.js' %}"></script>
+{% endblock %}

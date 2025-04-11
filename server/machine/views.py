@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
-from api.models import Profile
-from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth import authenticate, login as auth_login, logout
 
 def login(request):
     if request.method == 'POST':
@@ -14,7 +13,17 @@ def login(request):
             return render(request, "login.html", {'error': 'Invalid username or password'})
     return render(request, "login.html")
 
+def logout_view(request):
+    logout(request)
+    return redirect('machine:login')
+
 def dashboard(request):
-    ctx = {
-    }
-    return render(request, "manager_dash.html", context=ctx)
+    if request.user.is_authenticated:
+        if hasattr(request.user, 'profile') and request.user.profile.role == 'Manager':
+            print("Manager dashboard")
+            template = "manager_dashboard.html"
+        else:
+            print("Regular dashboard")
+            template = "gen_dashboard.html"
+        return render(request, template)
+    return redirect('machine:login')
