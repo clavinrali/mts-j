@@ -28,11 +28,12 @@ document.addEventListener('DOMContentLoaded', () => {
             machines.forEach(machine => {
                 const machineryItem = document.createElement('div');
                 machineryItem.classList.add('machinery-item');
+                machineryItem.setAttribute('data-id', machine.id);
                 machineryItem.innerHTML = `
                     <div class="machine-details">
                         <p class="machine-model"><strong>Name:</strong> ${machine.name}</p>
                         <p><strong>Model:</strong> ${machine.model}</p>
-                        <p><strong>Machine ID:</strong> ${machine.id}</p>
+                        <p><strong>Machine ID:</strong> ${machine.unique_machine_id}</p>
                         <p><strong>Location:</strong> ${machine.location}</p>
                         <p><strong>Manufacturer:</strong> ${machine.manufacturer || 'N/A'}</p>
                         <p><strong>Last Service:</strong> ${machine.last_service}</p>
@@ -122,9 +123,110 @@ const createDialogBox = (message) => {
     });
 };
 
+// Function to create a delete dialog box
+const createDeleteDialogBox = () => {
+    const dialog = document.createElement('div');
+    dialog.classList.add('custom-dialog');
+    dialog.innerHTML = `
+        <div class="dialog-content">
+            <p>Select a machine to delete:</p>
+            <select class="dialog-dropdown">
+                <option value="">Loading machines...</option>
+            </select>
+            <div class="dialog-buttons">
+                <button class="delete-dialog">Delete</button>
+                <button class="close-dialog">Close</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(dialog);
+
+    const dialogDropdown = dialog.querySelector('.dialog-dropdown');
+
+    // Fetch machine details and populate the dropdown
+    fetch('/api/machine/')
+        .then(response => response.json())
+        .then(data => {
+            const machines = data.message || [];
+            dialogDropdown.innerHTML = machines.map(machine => `
+                <option value="${machine.id}">
+                    ${machine.name} - ${machine.unique_machine_id} - ${machine.model || 'N/A'} - ${machine.location}
+                </option>
+            `).join('');
+        })
+        .catch(error => {
+            console.error('Error fetching machines:', error);
+            dialogDropdown.innerHTML = '<option value="">Error loading machines</option>';
+        });
+
+    // Close dialog functionality
+    dialog.querySelector('.close-dialog').addEventListener('click', () => {
+        document.body.removeChild(dialog);
+    });
+
+    // Helper function to get CSRF token
+    const getCSRFToken = () => {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+            const [name, value] = cookie.trim().split('=');
+            if (name === 'csrftoken') {
+                return value;
+            }
+        }
+        return '';
+    };
+
+    // Delete button functionality
+    dialog.querySelector('.delete-dialog').addEventListener('click', () => {
+        const selectedMachineId = dialogDropdown.value;
+        if (selectedMachineId) {
+            fetch(`/api/machine/${selectedMachineId}/delete/`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRFToken': getCSRFToken() // Include CSRF token
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Machine deleted successfully');
+                    document.body.removeChild(dialog);
+                    location.reload(); // Reload the page to reflect changes
+                } else {
+                    alert('Error deleting machine: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error deleting machine:', error);
+                alert('An error occurred while deleting the machine.');
+            });
+        } else {
+            alert('Please select a machine to delete.');
+        }
+    });
+};
+
 // Modify event listener for assign buttons
 document.addEventListener('click', (event) => {
     if (event.target.classList.contains('assign-button')) {
+        event.stopPropagation(); // Prevent machinery-item click event
         createDialogBox('Select an option to assign:');
+        return; // Exit to ensure no further processing
+    }
+
+    if (event.target.closest('.machinery-item')) {
+        const machineryItem = event.target.closest('.machinery-item');
+        const machineId = machineryItem.getAttribute('data-id'); // Get machineId from data-id
+        window.location.href = `/machine/${machineId}/info/`; // Redirect to machine info page
+    }
+});
+
+// Add event listener for the delete button
+document.addEventListener('DOMContentLoaded', () => {
+    const deleteMachineButton = document.getElementById('delete-machine-btn');
+    if (deleteMachineButton) {
+        deleteMachineButton.addEventListener('click', () => {
+            createDeleteDialogBox();
+        });
     }
 });

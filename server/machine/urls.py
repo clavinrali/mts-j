@@ -9,4 +9,5 @@ urlpatterns = [
     path("dashboard/", views.dashboard, name="dashboard"),
     path("logout/", views.logout_view, name="logout"),
     path("new_machine/", views.new_machine, name="new_machine"),
+    path("machine/<int:mid>/info/", views.machine_info, name="machine_info"),  # Machine Info Page
 ]

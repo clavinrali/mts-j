@@ -163,6 +163,12 @@
     font-weight: bold;
 }
 
+.machinery-item:hover {
+    background-color: #d5ebff; /* Light blue background on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Slightly stronger shadow */
+    cursor: pointer; /* Change cursor to pointer */
+}
+
 .machine-details {
     flex: 2; /* Allocate more space to machine-details */
     text-align: left; /* Align text to the left */

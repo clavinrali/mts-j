@@ -1,17 +1,18 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Machine Info</title>
-  <link rel="stylesheet" href="machine_info_styles.css" />
+  <link rel="stylesheet" href="{% static 'css/machine_info_styles.css' %}" />
 
 </head>
 <body>
   <div class="container">
     <header class="header">
       <h1>Machine Information</h1>
-      <div class="user-bubble">Manager</div>
+      <div class="user-bubble">{{ request.user.get_full_name }} - {{ request.user.profile.role }}</div>
     </header>
 
     <div class="content-grid">
@@ -19,60 +20,50 @@
       <div class="card">
         <div class="section-header">
           <span>Machine Details</span>
-          <button class="btn">View Case</button>
+          {% if machine.current_case %}
+          <button class="btn" onclick="window.location.href='/api/case/{{ machine.current_case.id }}/'">View Case</button>
+          {% endif %}
         </div>
 
         <div class="machine-details">
-          <p><strong>Machine Name:</strong> Yellow Paint Sprayer</p>
-          <p><strong>ID:</strong> YPS-0031</p>
-          <p><strong>Model:</strong> Arista 332</p>
-          <p><strong>Manufacturer:</strong> CAT Industrial</p>
-          <p><strong>Location:</strong> Floor 4 - GA02</p>
-          <p><strong>Installation Date:</strong> 10 Feb 2021</p>
-          <p><strong>Last Service:</strong> 19 Mar 2024</p>
-          <p><strong>Status:</strong> <span class="status-badge">WARNING</span></p>
+          <p><strong>Machine Name:</strong> {{ machine.name }}</p>
+          <p><strong>ID:</strong> {{ machine.unique_machine_id }}</p>
+          <p><strong>Model:</strong> {{ machine.model }}</p>
+          <p><strong>Manufacturer:</strong> {{ machine.manufacturer }}</p>
+          <p><strong>Location:</strong> {{ machine.location }}</p>
+          <p><strong>Last Service Date:</strong> {{ machine.last_service }}</p>
+          <p><strong>Status:</strong> <span id="{{ machine.status }}-status">{{ machine.status }}</span></p>
         </div>
 
         <div class="section-header" style="margin-top: 30px;">
           <span>Warnings</span>
           <div>
-            <button class="btn">Add</button>
-            <button class="btn">Delete</button>
+            <button class="btn" onclick="window.location.href='/api/machine/{{ machine.id }}/add_warning/'">Add</button>
           </div>
         </div>
 
         <div class="warning-list">
-          <div class="warning-item">⚠️ Oil Level Low</div>
-          <div class="warning-item">⚠️ Temperature Spike</div>
+          {% for warning in warnings %}
+          <div class="warning-item">⚠️ {{ warning.status }}</div>
+          {% empty %}
+          <p>No warnings available.</p>
+          {% endfor %}
         </div>
 
         <div class="section-header" style="margin-top: 30px;">
           <span>Case History</span>
         </div>
         <div class="case-history">
-          <div class="case">Case #023 – Hydraulic Failure</div>
-          <div class="case">Case #042 – Nozzle Blockage</div>
-          <div class="case">Case #051 – Voltage Spike</div>
+          {% for case in cases %}
+          <div class="case">Case #{{ case.id }} – {{ case.title }}</div>
+          {% empty %}
+          <p>No case history available.</p>
+          {% endfor %}
         </div>
 
         <div class="footer-buttons">
-          <button class="btn">View All</button>
-          <button class="btn grey" onclick="window.location.href='manager_dash.html'">Go to Dashboard</button>
+          <button class="btn grey" onclick="window.location.href='{% url 'machine:dashboard' %}'">Go to Dashboard</button>
         </div>
-      </div>
-
-      <!-- Right Panel: Technician Info -->
-      <div class="card">
-        <div class="section-header">
-          <span>Assigned Technician</span>
-        </div>
-        <div class="tech-details">
-          <p><strong>Name:</strong> John Doe</p>
-          <p><strong>Contact:</strong> john.doe@acme.com</p>
-          <p><strong>Assigned On:</strong> 01 Apr 2025</p>
-          <p><strong>Days Open:</strong> 6 Days</p>
-        </div>
-        <button class="btn done" style="margin-top: 20px;">Mark Task as Done</button>
       </div>
     </div>
   </div>

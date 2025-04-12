@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout
+from api.models import Machine
 
 def login(request):
     if request.method == 'POST':
@@ -29,4 +30,18 @@ def dashboard(request):
 def new_machine(request):
     if request.user.is_authenticated and hasattr(request.user, 'profile') and request.user.profile.role == 'Manager':
         return render(request, "new_machine.html")
+    return redirect('machine:login')
+
+def machine_info(request, mid):
+    if request.user.is_authenticated:
+        try:
+            machine = Machine.objects.get(id=mid)
+            context = {
+                "machine": machine,
+                "warnings": machine.current_warnings.all(),
+                "cases": machine.machine.all(),  # Related cases
+            }
+            return render(request, "machine_info_page.html", context)
+        except Machine.DoesNotExist:
+            return redirect('machine:dashboard')  # Redirect if machine not found
     return redirect('machine:login')

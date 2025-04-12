@@ -12,7 +12,7 @@
     <header class="header">
       <button class="back-to-dashboard" onclick="window.location.href='{% url 'machine:dashboard' %}'">Back to Dashboard</button>
       <h1>Machine Input Panel</h1>
-      <div class="user-bubble"> {{ request.user.get_full_name }} - {{ request.user.profile.role }}</div>
+      <div class="user-bubble">{{ request.user.get_full_name }} - {{ request.user.profile.role }}</div>
     </header>
 
     <div class="form-container">
