@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const currentUsername = document.getElementById('current-username').value;
     const userPanel = document.querySelector('.user-panel');
     const dropdownMenu = document.querySelector('.dropdown-menu');
 
@@ -18,16 +19,23 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch('/api/machine/')
         .then(response => response.json())
         .then(data => {
-            const machines = data.message || []; // Access the 'message' field if it exists
+            let machines = data.message || []; // Access the 'message' field if it exists
             machineryList.innerHTML = ''; // Clear existing content
+
+            // Sort machines by priority in increasing order
+            machines.sort((a, b) => a.priority - b.priority);
+
             machines.forEach(machine => {
                 const machineryItem = document.createElement('div');
                 machineryItem.classList.add('machinery-item');
                 machineryItem.innerHTML = `
                     <div class="machine-details">
-                        <p class="machine-model"><strong>Model:</strong> ${machine.name}</p>
+                        <p class="machine-model"><strong>Name:</strong> ${machine.name}</p>
+                        <p><strong>Model:</strong> ${machine.model}</p>
+                        <p><strong>Machine ID:</strong> ${machine.id}</p>
                         <p><strong>Location:</strong> ${machine.location}</p>
-                        <p><strong>Manufacturer:</strong> ${machine.model}</p>
+                        <p><strong>Manufacturer:</strong> ${machine.manufacturer || 'N/A'}</p>
+                        <p><strong>Last Service:</strong> ${machine.last_service}</p>
                     </div>
                     <div class="issue-details" id="issue-details-${machine.id}">
                         ${machine.current_case ? '<p>Loading case details...</p>' : '<!-- No issue -->'}
@@ -92,7 +100,7 @@ const createDialogBox = (message) => {
                 .then(response => response.json())
                 .then(data => {
                     const employees = data.message || [];
-                    dialogDropdown.innerHTML = employees.map(employee => `<option value="${employee.id}">${employee.username}</option>`).join('');
+                    dialogDropdown.innerHTML = employees.map(employee => `<option value="${employee.id}">${employee.full_name}</option>`).join('');
                 })
                 .catch(error => console.error('Error fetching employees:', error));
         } else {

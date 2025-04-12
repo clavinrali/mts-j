@@ -50,6 +50,7 @@
             </div>
         </main>
     </div>
+    <input type="hidden" id="current-username" value="{{ request.user.username }}">
     {% block userdashboard_script %} {% endblock %}
 </body>
 </html>

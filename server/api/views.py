@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 import json
-from .models import Case, Machine, Comment
+from .models import Case, Machine, Comment, Task
 
 def index(request):
     ctx = {}
@@ -95,7 +95,10 @@ def get_employees_by_role(request):
         else:
             return JsonResponse({"success": False, "message": "Invalid role"}, status=400)
 
-        employee_list = [{"id": employee.id, "username": employee.username} for employee in employees]
+        employee_list = [{"id": employee.id, 
+                          "username": employee.username, 
+                          "full_name": f"{employee.first_name} {employee.last_name}"} 
+                         for employee in employees]
         return JsonResponse({"success": True, "message": employee_list}, safe=False, status=200)
 
     return JsonResponse({"success": False, "message": "Invalid request"}, status=400)
@@ -105,12 +108,19 @@ def get_machines(request):
         # get all machines
         machines = Machine.objects.all()
         # format the machine list
-        machine_list = [{"name": machine.name,
+        machine_list = [{"id": machine.id,
+                         "name": machine.name,
+                         "model": machine.model,
                          "last_service": machine.last_service,
                          "location": machine.location,
                          "priority": machine.priority,
-                         "assigned": machine.person if machine.person else None,
-                         "status": machine.status} for machine in machines]
+                         "manufacturer": machine.manufacturer,
+                         "unique_machine_id": machine.unique_machine_id,
+                         "assigned": machine.person.username if machine.person else None,
+                         "status": machine.status,
+                         "current_case": machine.current_case.id if machine.current_case else None,
+                         "current_warnings": [warning.status for warning in machine.current_warnings.all()]} 
+                        for machine in machines]
         return JsonResponse({"success": True, "message": machine_list}, safe=False, status=200)
 
     return JsonResponse({"success": False, "message": "Invalid request"}, status=400)
@@ -124,13 +134,23 @@ def create_machine(request):
         location = data.get("location")
         model = data.get("model")
         last_service = data.get("last_service")
+        manufacturer = data.get("manufacturer")
+        unique_machine_id = data.get("unique_machine_id")
 
         # check if machine already exists
-        if Machine.objects.filter(name=name).exists():
-            return JsonResponse({"success": False, "message": "Machine already exists"}, status=400)
+        if Machine.objects.filter(unique_machine_id=unique_machine_id).exists():
+            return JsonResponse({"success": False, "message": "Machine with this unique ID already exists"}, status=400)
 
         # create machine
-        machine = Machine.objects.create(name=name, priority=priority, location=location, model=model, last_service=last_service)
+        machine = Machine.objects.create(
+            name=name,
+            priority=priority,
+            location=location,
+            model=model,
+            last_service=last_service,
+            manufacturer=manufacturer,
+            unique_machine_id=unique_machine_id
+        )
         machine.save()
 
         return JsonResponse({"success": True, "message": "Machine created successfully"}, status=201)
@@ -156,7 +176,19 @@ def machine_details(request, mid):
     if request.method == 'GET':
         # get machine
         machine = Machine.objects.get(id=mid)
-        return JsonResponse({"success": True, "message": machine}, status=200)
+        machine_data = {
+            "id": machine.id,
+            "name": machine.name,
+            "model": machine.model,
+            "location": machine.location,
+            "priority": machine.priority,
+            "manufacturer": machine.manufacturer,
+            "last_service": machine.last_service,
+            "status": machine.status,
+            "current_case": machine.current_case.id if machine.current_case else None
+        }
+        return JsonResponse({"success": True, "message": machine_data}, status=200)
+    return JsonResponse({"success": False, "message": "Invalid request"}, status=400)
 
 def get_machine_cases(request, cid):
     if request.method == 'GET':
@@ -308,8 +340,7 @@ def case_close(request, cid):
             machine.status = "warning"
         else:
             # set machine status to ok
-            machine.status = "ok"
-        machine.current_case = None
+            machine.current_case = "ok"
         machine.person = None
         machine.save()
 
@@ -331,5 +362,36 @@ def add_comment(request, cid):
         case.save()
 
         return JsonResponse({"success": True, "message": "Comment added successfully"}, status=201)
+
+    return JsonResponse({"success": False, "message": "Invalid request"}, status=400)
+
+@csrf_exempt
+def set_task(request):
+    if request.method == 'POST':
+        # get data from request
+        data = json.loads(request.body)
+        creator_id = data.get("creator_id")  # ID of the user creating the task
+        assignee_id = data.get("assignee_id")  # ID of the user assigned the task
+        machine_id = data.get("machine_id")
+        status = data.get("status", "pending")
+
+        # validate creator, assignee, and machine
+        try:
+            creator = User.objects.get(id=creator_id)
+            assignee = User.objects.get(id=assignee_id)
+            machine = Machine.objects.get(unique_machine_id=machine_id)
+        except (User.DoesNotExist, Machine.DoesNotExist):
+            return JsonResponse({"success": False, "message": "Invalid user or machine ID"}, status=400)
+
+        # create task
+        task = Task.objects.create(
+            user=creator,
+            machine=machine,
+            status=status,
+            assignee=assignee
+        )
+        task.save()
+
+        return JsonResponse({"success": True, "message": "Task assigned successfully"}, status=201)
 
     return JsonResponse({"success": False, "message": "Invalid request"}, status=400)

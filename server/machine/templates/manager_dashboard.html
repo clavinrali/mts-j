@@ -11,7 +11,7 @@
 {% block control_container %}
 <div class="item-container-panel">
     <h3>Inventory Control</h3>
-    <button id="add-machine-btn">Add New Machine</button>
+    <button id="add-machine-btn" onclick="window.location.href='{% url 'machine:new_machine' %}'">Add New Machine</button>
     <button id="delete-machine-btn">Delete Machines</button>
 </div>
 <div class="item-container-panel">

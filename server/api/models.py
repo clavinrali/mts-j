@@ -37,6 +37,7 @@ class Case(models.Model):
 
 class Warning(models.Model):
     status = models.CharField(max_length=100, verbose_name='status type')
+    machines = models.ManyToManyField('Machine', blank=True, related_name="warnings")  # Machines associated with this warning
 
     def __str__(self):
         return self.status
@@ -55,7 +56,7 @@ class Machine(models.Model):
         choices=STATUS_CHOICES,
         default='ok',
         verbose_name='status type')
-    warnings = models.ManyToManyField(Warning, blank=True)
+    current_warnings = models.ManyToManyField(Warning, blank=True, related_name="current_warnings")  # Active warnings
     name = models.CharField(max_length=100)
     priority = models.IntegerField(default=0)
     model = models.CharField(max_length=100)

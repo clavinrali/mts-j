@@ -22,4 +22,5 @@ urlpatterns = [
     path("case/<int:cid>/", views.case_details, name="case_details"), # Case Display dashboard
     path("case/<int:cid>/close/", views.case_close, name="case_close"), #
     path("case/<int:cid>/add_comment/", views.add_comment, name="add_comment"), # Add Comment Page ***
+    path("task/set/", views.set_task, name="set_task"), # Assign Task
 ]

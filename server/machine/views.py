@@ -20,10 +20,13 @@ def logout_view(request):
 def dashboard(request):
     if request.user.is_authenticated:
         if hasattr(request.user, 'profile') and request.user.profile.role == 'Manager':
-            print("Manager dashboard")
             template = "manager_dashboard.html"
         else:
-            print("Regular dashboard")
             template = "gen_dashboard.html"
-        return render(request, template)
+        return render(request, template)  # Ensure this renders the correct template
+    return redirect('machine:login')
+
+def new_machine(request):
+    if request.user.is_authenticated and hasattr(request.user, 'profile') and request.user.profile.role == 'Manager':
+        return render(request, "new_machine.html")
     return redirect('machine:login')
