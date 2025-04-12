@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Machine Info</title>
+  <link rel="stylesheet" href="machine_info_styles.css" />
+
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>Machine Information</h1>
+      <div class="user-bubble">Manager</div>
+    </header>
+
+    <div class="content-grid">
+      <!-- Left Panel: Machine Details -->
+      <div class="card">
+        <div class="section-header">
+          <span>Machine Details</span>
+          <button class="btn">View Case</button>
+        </div>
+
+        <div class="machine-details">
+          <p><strong>Machine Name:</strong> Yellow Paint Sprayer</p>
+          <p><strong>ID:</strong> YPS-0031</p>
+          <p><strong>Model:</strong> Arista 332</p>
+          <p><strong>Manufacturer:</strong> CAT Industrial</p>
+          <p><strong>Location:</strong> Floor 4 - GA02</p>
+          <p><strong>Installation Date:</strong> 10 Feb 2021</p>
+          <p><strong>Last Service:</strong> 19 Mar 2024</p>
+          <p><strong>Status:</strong> <span class="status-badge">WARNING</span></p>
+        </div>
+
+        <div class="section-header" style="margin-top: 30px;">
+          <span>Warnings</span>
+          <div>
+            <button class="btn">Add</button>
+            <button class="btn">Delete</button>
+          </div>
+        </div>
+
+        <div class="warning-list">
+          <div class="warning-item">⚠️ Oil Level Low</div>
+          <div class="warning-item">⚠️ Temperature Spike</div>
+        </div>
+
+        <div class="section-header" style="margin-top: 30px;">
+          <span>Case History</span>
+        </div>
+        <div class="case-history">
+          <div class="case">Case #023 – Hydraulic Failure</div>
+          <div class="case">Case #042 – Nozzle Blockage</div>
+          <div class="case">Case #051 – Voltage Spike</div>
+        </div>
+
+        <div class="footer-buttons">
+          <button class="btn">View All</button>
+          <button class="btn grey" onclick="window.location.href='manager_dash.html'">Go to Dashboard</button>
+        </div>
+      </div>
+
+      <!-- Right Panel: Technician Info -->
+      <div class="card">
+        <div class="section-header">
+          <span>Assigned Technician</span>
+        </div>
+        <div class="tech-details">
+          <p><strong>Name:</strong> John Doe</p>
+          <p><strong>Contact:</strong> john.doe@acme.com</p>
+          <p><strong>Assigned On:</strong> 01 Apr 2025</p>
+          <p><strong>Days Open:</strong> 6 Days</p>
+        </div>
+        <button class="btn done" style="margin-top: 20px;">Mark Task as Done</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

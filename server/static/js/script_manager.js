@@ -60,14 +60,19 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Create a custom dialog box
-const createDialogBox = (message, options = []) => {
+const createDialogBox = (message) => {
     const dialog = document.createElement('div');
     dialog.classList.add('custom-dialog');
     dialog.innerHTML = `
         <div class="dialog-content">
             <p>${message}</p>
+            <select class="role-dropdown">
+                <option value="None">Select a Role</option>
+                <option value="technician">Technician</option>
+                <option value="repair">Repair Personnel</option>
+            </select>
             <select class="dialog-dropdown">
-                ${options.map(option => `<option value="${option.value}">${option.label}</option>`).join('')}
+                <option value="">Select an employee</option>
             </select>
             <div class="dialog-buttons">
                 <button class="assign-dialog">Assign</button>
@@ -77,6 +82,24 @@ const createDialogBox = (message, options = []) => {
     `;
     document.body.appendChild(dialog);
 
+    // Fetch employees based on selected role
+    const roleDropdown = dialog.querySelector('.role-dropdown');
+    const dialogDropdown = dialog.querySelector('.dialog-dropdown');
+    roleDropdown.addEventListener('change', () => {
+        const selectedRole = roleDropdown.value;
+        if (selectedRole !== "None") {
+            fetch(`/api/employees/by_role/?role=${selectedRole}`)
+                .then(response => response.json())
+                .then(data => {
+                    const employees = data.message || [];
+                    dialogDropdown.innerHTML = employees.map(employee => `<option value="${employee.id}">${employee.username}</option>`).join('');
+                })
+                .catch(error => console.error('Error fetching employees:', error));
+        } else {
+            dialogDropdown.innerHTML = '<option value="">Select an employee</option>';
+        }
+    });
+
     // Close dialog functionality
     dialog.querySelector('.close-dialog').addEventListener('click', () => {
         document.body.removeChild(dialog);
@@ -84,8 +107,9 @@ const createDialogBox = (message, options = []) => {
 
     // Assign button functionality
     dialog.querySelector('.assign-dialog').addEventListener('click', () => {
-        const selectedValue = dialog.querySelector('.dialog-dropdown').value;
-        console.log(`Assigned: ${selectedValue}`); // Replace with actual assignment logic
+        const selectedRole = roleDropdown.value;
+        const selectedValue = dialogDropdown.value;
+        console.log(`Assigned Role: ${selectedRole}, Assigned: ${selectedValue}`); // Replace with actual assignment logic
         document.body.removeChild(dialog);
     });
 };
@@ -93,11 +117,6 @@ const createDialogBox = (message, options = []) => {
 // Modify event listener for assign buttons
 document.addEventListener('click', (event) => {
     if (event.target.classList.contains('assign-button')) {
-        const options = [
-            { value: 'option1', label: 'Option 1' },
-            { value: 'option2', label: 'Option 2' },
-            { value: 'option3', label: 'Option 3' }
-        ];
-        createDialogBox('Select an option to assign:', options);
+        createDialogBox('Select an option to assign:');
     }
 });

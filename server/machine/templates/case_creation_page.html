@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/case_creation_page.css">
+    <title>Case Creation Page</title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Case Creation Page</h1>
+            <div class="technician-info">
+                <span class="technician-icon">T</span>
+                <span>Technician John Doe</span>
+            </div>
+        </header>
+
+        <section class="case-details">
+            <h2>Case: #141626</h2>
+            <p>Machine Name: Yellow Machine</p>
+            <p>Machine ID: AF5551</p>
+            <p>Model: Arista 332</p>
+        </section>
+
+        <form class="case-form">
+            <label for="title">Title:</label>
+            <input type="text" id="title" placeholder="Hole in Pipe">
+
+            <label for="notes">Notes:</label>
+            <textarea id="notes" rows="4">There is a hole at the bottom side of the pipe, possibly due to high velocity impact of debris nearby.</textarea>
+            <button type="button" class="add-note">Add Note</button>
+
+            <div class="image-upload">
+                <label>Insert Image</label>
+                <div class="image-placeholder">
+                    <span>Upload Image</span>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-button">Submit Case</button>
+        </form>
+    </div>
+</body>
+</html>
