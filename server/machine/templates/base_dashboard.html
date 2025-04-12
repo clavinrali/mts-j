@@ -13,6 +13,7 @@
     <div class="dashboard">
         <header class="header">
             <div class="company-name">ACME Manufacturing Corp</div>
+            <div class="user-role-heading">{{ request.user.profile.role }} Dashboard</div>
             <div class="user-panel">
                 <span class="user-name">{{ request.user.get_full_name }}</span>
                 <div class="user-bubble">

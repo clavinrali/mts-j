@@ -7,6 +7,7 @@ urlpatterns = [
     path("statistic/", views.statistic, name="statistic"), # Statistics page
     path("create_user/", views.create_user, name="create_user"), # Create User Page ***
     path("employees/", views.get_employees, name="get_employees"), # Select Employee
+    path("employees/by_role/", views.get_employees_by_role, name="get_employees_by_role"), # Fetch employees by role
     path("machine/", views.get_machines, name="get_machines"), # Manager Dashboard Page
     path("machine/create/", views.create_machine, name="create_machine"), # New machine creation page
     path("machine/user/<int:uid>/", views.get_machines_by_user, name="get_machines_by_user"), # Technician Dashboard Page

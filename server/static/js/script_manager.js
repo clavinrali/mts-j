@@ -58,3 +58,46 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => console.error('Error fetching machinery data:', error));
 });
+
+// Create a custom dialog box
+const createDialogBox = (message, options = []) => {
+    const dialog = document.createElement('div');
+    dialog.classList.add('custom-dialog');
+    dialog.innerHTML = `
+        <div class="dialog-content">
+            <p>${message}</p>
+            <select class="dialog-dropdown">
+                ${options.map(option => `<option value="${option.value}">${option.label}</option>`).join('')}
+            </select>
+            <div class="dialog-buttons">
+                <button class="assign-dialog">Assign</button>
+                <button class="close-dialog">Close</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(dialog);
+
+    // Close dialog functionality
+    dialog.querySelector('.close-dialog').addEventListener('click', () => {
+        document.body.removeChild(dialog);
+    });
+
+    // Assign button functionality
+    dialog.querySelector('.assign-dialog').addEventListener('click', () => {
+        const selectedValue = dialog.querySelector('.dialog-dropdown').value;
+        console.log(`Assigned: ${selectedValue}`); // Replace with actual assignment logic
+        document.body.removeChild(dialog);
+    });
+};
+
+// Modify event listener for assign buttons
+document.addEventListener('click', (event) => {
+    if (event.target.classList.contains('assign-button')) {
+        const options = [
+            { value: 'option1', label: 'Option 1' },
+            { value: 'option2', label: 'Option 2' },
+            { value: 'option3', label: 'Option 3' }
+        ];
+        createDialogBox('Select an option to assign:', options);
+    }
+});

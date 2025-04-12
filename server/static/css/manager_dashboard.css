@@ -1,0 +1,106 @@
+/* Assign button styles */
+.assign-button {
+    background-color: #007bff; /* Blue button color */
+    color: #ffffff; /* White text */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+
+
+/* Notifications section styles */
+.notifications {
+    width: 90%; /* Set width relative to the right-panel */
+    max-width: none; /* Remove fixed max-width */
+    background-color: #ffffff; /* White background for notifications */
+    border: 1px solid #cccccc; /* Light gray border */
+    border-radius: 8px; /* Rounded corners */
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.notifications h3 {
+    margin: 0 0 10px 0; /* Add spacing below the heading */
+    font-size: 18px;
+    font-weight: bold;
+    color: #000000; /* Black text for contrast */
+}
+
+.notification-list {
+    list-style: none; /* Remove default list styling */
+    padding: 0; /* Remove default padding */
+    margin: 0; /* Remove default margin */
+}
+
+.notification-item {
+    padding: 10px;
+    background-color: #f9f9f9; /* Light gray background for items */
+    border-bottom: 1px solid #cccccc; /* Divider between items */
+    font-size: 14px;
+    color: #333333; /* Dark gray text */
+}
+
+
+.notification-item:last-child {
+    border-bottom: none; /* Remove border for the last item */
+}
+
+/* Custom dialog box styles */
+.custom-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    padding: 30px; /* Increased padding */
+    height: 200px; /* Increased height */
+    width: 500px; /* Increased width */
+    text-align: center;
+}
+
+.dialog-content p {
+    margin: 0 0 20px 0;
+    font-size: 16px;
+    color: #333333;
+}
+
+.dialog-content .close-dialog {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 10px 20px;
+}
+
+.dialog-content select.dialog-dropdown {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.dialog-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.dialog-buttons .assign-dialog {
+    background-color: #28a745; /* Green button color */
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 10px 20px;
+}

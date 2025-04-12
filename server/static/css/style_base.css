@@ -16,10 +16,17 @@ body {
 }
 
 .company-name {
-    margin-right: auto; /* Push the company name to the leftmost side */
-    font-size: 30px;
+    font-size: 24px;
     font-weight: bold;
     color: #007bff; /* Black text for contrast */
+}
+
+.user-role-heading {
+    font-size: 30px; /* Set font size */
+    font-weight: bold; /* Make the text bold */
+    margin-right: 350px; /* Add right margin to create space */
+    text-align: center; /* Center align the text */
+    padding: 5px; /* Add padding for better spacing */
 }
 
 .user-panel {

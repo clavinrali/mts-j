@@ -85,6 +85,21 @@ def get_employees(request):
 
     return JsonResponse({"success": False, "message": "Invalid request"}, status=400)
 
+def get_employees_by_role(request):
+    if request.method == 'GET':
+        role = request.GET.get('role')
+        if role == 'technician':
+            employees = User.objects.filter(groups__name='Technician')
+        elif role == 'repair':
+            employees = User.objects.filter(groups__name='Repair')
+        else:
+            return JsonResponse({"success": False, "message": "Invalid role"}, status=400)
+
+        employee_list = [{"id": employee.id, "username": employee.username} for employee in employees]
+        return JsonResponse({"success": True, "message": employee_list}, safe=False, status=200)
+
+    return JsonResponse({"success": False, "message": "Invalid request"}, status=400)
+
 def get_machines(request):
     if request.method == 'GET':
         # get all machines

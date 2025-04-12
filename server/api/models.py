@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.db.models.signals import post_migrate
 from django.dispatch import receiver
 from .initial_data import create_initial_data
@@ -87,3 +87,6 @@ class Task(models.Model):
 def populate_initial_machines(sender, **kwargs):
     if sender.name == 'api':  # Ensure this runs only for the 'api' app
         create_initial_data()
+        # Create groups based on ROLE_CHOICES
+        for role, _ in Profile.ROLE_CHOICES:
+            Group.objects.get_or_create(name=role)

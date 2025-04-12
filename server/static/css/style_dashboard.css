@@ -5,6 +5,27 @@
     padding: 20px;
 }
 
+.left-panel {
+    width: 95%; /* Set width relative to the container */
+    display: inline-block; /* Ensure it stays inline with the right panel */
+}
+
+.right-panel {
+    height: -100%;
+    width: 20%; /* Set width relative to the container */
+    position: relative; /* Change from absolute to relative for better responsiveness */
+    top: -20px ;
+    right: -1%;
+    background-color: #c7c7c7; /* Light gray background */
+    border-left: 1px solid #cccccc; /* Light gray border */
+    border-top: 1px solid #cccccc;
+    display: flex;
+    flex-direction: column; /* Ensure children are stacked vertically */
+    align-items: flex-start; /* Align items to the top */
+    justify-content: flex-start; /* Align items to the top */
+    padding: 10px;
+}
+
 .control-container {
     display: flex;
     flex-direction: row;
@@ -56,39 +77,13 @@
     background-color: #0056b3; /* Darker blue for hover effect */
 }
 
-#option1-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff; /* Blue button color */
-    color: #ffffff; /* White text */
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
+.button-container {
+    display: flex;
+    justify-content: flex-end; /* Align buttons to the right */
+    gap: 35px; /* Add spacing between buttons */
 }
 
-#option1-button:hover {
-    background-color: #0056b3; /* Darker blue for hover effect */
-}
-
-#option2-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff; /* Blue button color */
-    color: #ffffff; /* White text */
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-#option2-button:hover {
-    background-color: #0056b3; /* Darker blue for hover effect */
-}
-
-#filter-button, #export-button {
+.button-container button {
     background-color: #e55a00; /* Blue button color */
     color: #ffffff; /* White text */
     border: none;
@@ -99,14 +94,13 @@
     padding: 10px 15px;
 }
 
-#filter-button:hover, #export-button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+.button-container button:hover {
+    background-color: #0056b3;
 }
 
-#filter-button:active, #export-button:active {
+.button-container button:active {
     background-color: #003f7f; /* Even darker blue on click */
 }
-
 
 .dashboard-container {
     display: flex;
@@ -135,12 +129,6 @@
     margin: 5px; /* Remove default margin */
     font-weight: bold;
     color: #000000; /* Black text for contrast */
-}
-
-.button-container {
-    display: flex;
-    justify-content: flex-end; /* Align buttons to the right */
-    gap: 35px; /* Add spacing between buttons */
 }
 
 .machinery-list {
@@ -174,7 +162,6 @@
     font-size: 16px; /* Slightly smaller font size */
     font-weight: bold;
 }
-
 
 .machine-details {
     flex: 2; /* Allocate more space to machine-details */
@@ -225,17 +212,6 @@
     font-weight: bold; /* Make the issue text bold */
 }
 
-/* Assign button styles */
-.assign-button {
-    background-color: #007bff; /* Blue button color */
-    color: #ffffff; /* White text */
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-}
-
 /* Status indicator styles */
 .status-indicator {
     padding: 10px 15px;
@@ -264,62 +240,4 @@
     color: #ffffff;
     text-align: center;
     border-radius: 5px;
-}
-
-.left-panel {
-    width: 95%; /* Set width relative to the container */
-    display: inline-block; /* Ensure it stays inline with the right panel */
-}
-
-.right-panel {
-    height: -100%;
-    width: 20%; /* Set width relative to the container */
-    position: relative; /* Change from absolute to relative for better responsiveness */
-    top: -20px ;
-    right: -1%;
-    background-color: #c7c7c7; /* Light gray background */
-    border-left: 1px solid #cccccc; /* Light gray border */
-    border-top: 1px solid #cccccc;
-    display: flex;
-    flex-direction: column; /* Ensure children are stacked vertically */
-    align-items: flex-start; /* Align items to the top */
-    justify-content: flex-start; /* Align items to the top */
-    padding: 10px;
-}
-
-/* Notifications section styles */
-.notifications {
-    width: 90%; /* Set width relative to the right-panel */
-    max-width: none; /* Remove fixed max-width */
-    background-color: #ffffff; /* White background for notifications */
-    border: 1px solid #cccccc; /* Light gray border */
-    border-radius: 8px; /* Rounded corners */
-    padding: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-}
-
-.notifications h3 {
-    margin: 0 0 10px 0; /* Add spacing below the heading */
-    font-size: 18px;
-    font-weight: bold;
-    color: #000000; /* Black text for contrast */
-}
-
-.notification-list {
-    list-style: none; /* Remove default list styling */
-    padding: 0; /* Remove default padding */
-    margin: 0; /* Remove default margin */
-}
-
-.notification-item {
-    padding: 10px;
-    background-color: #f9f9f9; /* Light gray background for items */
-    border-bottom: 1px solid #cccccc; /* Divider between items */
-    font-size: 14px;
-    color: #333333; /* Dark gray text */
-}
-
-
-.notification-item:last-child {
-    border-bottom: none; /* Remove border for the last item */
 }
