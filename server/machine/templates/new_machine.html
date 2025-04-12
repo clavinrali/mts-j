@@ -52,6 +52,19 @@
           <input type="date" id="lastService" name="last_service" />
         </div>
 
+        <div class="form-group">
+          <label for="warningCodeInput">Warning Code:</label>
+          <input type="text" id="warningCodeInput" placeholder="Enter warning code" />
+        </div>
+        <div class="form-group">
+          <label for="warningDescriptionInput">Warning Description:</label>
+          <input type="text" id="warningDescriptionInput" placeholder="Enter warning description" />
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <button type="button" id="addWarningBtn">Add Warning</button>
+        </div>
+        <ul id="warningList" style="margin-top: 10px; padding-left: 20px; list-style-type: disc;"></ul>
+
         <div class="done-btn">
           <button type="button" class="back-btn" onclick="window.location.href='{% url 'machine:dashboard' %}'">Go Back to Dashboard</button>
           <button type="submit" class="btn done">Done</button>

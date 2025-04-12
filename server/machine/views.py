@@ -32,16 +32,17 @@ def new_machine(request):
         return render(request, "new_machine.html")
     return redirect('machine:login')
 
-def machine_info(request, mid):
-    if request.user.is_authenticated:
-        try:
-            machine = Machine.objects.get(id=mid)
-            context = {
-                "machine": machine,
-                "warnings": machine.current_warnings.all(),
-                "cases": machine.machine.all(),  # Related cases
-            }
-            return render(request, "machine_info_page.html", context)
-        except Machine.DoesNotExist:
-            return redirect('machine:dashboard')  # Redirect if machine not found
-    return redirect('machine:login')
+def machine_info_page(request, mid):
+    try:
+        machine = Machine.objects.get(id=mid)
+        cases = machine.machine.all()  # Retrieve all cases related to the machine
+        warnings = machine.active_warnings.all()  # Retrieve active warnings
+        supported_warnings = machine.supported_warnings.all()  # Retrieve supported warnings
+        return render(request, "machine_info_page.html", {
+            "machine": machine,
+            "cases": cases,
+            "warnings": warnings,
+            "supported_warnings": supported_warnings
+        })
+    except Machine.DoesNotExist:
+        return render(request, "404.html", {"message": "Machine not found"}, status=404)

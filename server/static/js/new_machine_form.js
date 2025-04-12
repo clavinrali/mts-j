@@ -1,11 +1,32 @@
 document.addEventListener('DOMContentLoaded', () => {
     const machineForm = document.getElementById('machineForm');
+    const warningCodeInput = document.getElementById('warningCodeInput');
+    const warningDescriptionInput = document.getElementById('warningDescriptionInput');
+    const addWarningBtn = document.getElementById('addWarningBtn');
+    const warningList = document.getElementById('warningList');
+    const warnings = [];
+
+    addWarningBtn.addEventListener('click', () => {
+        const code = warningCodeInput.value.trim();
+        const description = warningDescriptionInput.value.trim();
+        if (code && description) {
+            warnings.push({ code, description });
+            const listItem = document.createElement('li');
+            listItem.textContent = `${code}: ${description}`;
+            warningList.appendChild(listItem);
+            warningCodeInput.value = '';
+            warningDescriptionInput.value = '';
+        } else {
+            alert('Please provide both a warning code and description.');
+        }
+    });
 
     machineForm.addEventListener('submit', (event) => {
         event.preventDefault();
 
         const formData = new FormData(machineForm);
         const machineData = Object.fromEntries(formData.entries());
+        machineData.supported_warnings = warnings;
 
         fetch('/api/machine/create/', {
             method: 'POST',

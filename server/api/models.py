@@ -36,12 +36,11 @@ class Case(models.Model):
     comments = models.ManyToManyField(Comment, blank=True)
 
 class Warning(models.Model):
-    status = models.CharField(max_length=100, verbose_name='status type')
-    machines = models.ManyToManyField('Machine', blank=True, related_name="warnings")  # Machines associated with this warning
+    code = models.CharField(max_length=50, unique=True)
+    description = models.TextField()
 
     def __str__(self):
-        return self.status
-
+        return f"{self.code}: {self.description}"
 
 class Machine(models.Model):
     STATUS_CHOICES = [
@@ -56,7 +55,6 @@ class Machine(models.Model):
         choices=STATUS_CHOICES,
         default='ok',
         verbose_name='status type')
-    current_warnings = models.ManyToManyField(Warning, blank=True, related_name="current_warnings")  # Active warnings
     name = models.CharField(max_length=100)
     priority = models.IntegerField(default=0)
     model = models.CharField(max_length=100)
@@ -64,6 +62,8 @@ class Machine(models.Model):
     last_service = models.DateField(default='2000-01-01')
     manufacturer = models.CharField(max_length=100, blank=True, null=True)
     unique_machine_id = models.CharField(max_length=100, unique=True)
+    supported_warnings = models.ManyToManyField(Warning, related_name='supported_machines', blank=True)
+    active_warnings = models.ManyToManyField(Warning, related_name='active_machines', blank=True)
 
     class Meta:
         ordering = ['name']

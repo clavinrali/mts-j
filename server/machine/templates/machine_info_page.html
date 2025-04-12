@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Machine Info</title>
   <link rel="stylesheet" href="{% static 'css/machine_info_styles.css' %}" />
-
+  <meta name="csrf-token" content="{{ csrf_token }}">
 </head>
 <body>
   <div class="container">
@@ -37,14 +37,24 @@
 
         <div class="section-header" style="margin-top: 30px;">
           <span>Warnings</span>
-          <div>
-            <button class="btn" onclick="window.location.href='/api/machine/{{ machine.id }}/add_warning/'">Add</button>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <select id="warning-select">
+              <option value="" disabled selected>Select a warning</option>
+              {% for warning in machine.supported_warnings.all %}
+              <option value="{{ warning.id }}">{{ warning.code }} - {{ warning.description }}</option>
+              {% empty %}
+              <option value="" disabled>No warnings available</option>
+              {% endfor %}
+            </select>
+            <button class="btn" onclick="setWarning()">Set</button>
           </div>
         </div>
 
-        <div class="warning-list">
+        <div class="active-warning-list">
           {% for warning in warnings %}
+          {% if warning.is_active %}
           <div class="warning-item">⚠️ {{ warning.status }}</div>
+          {% endif %}
           {% empty %}
           <p>No warnings available.</p>
           {% endfor %}
@@ -67,5 +77,10 @@
       </div>
     </div>
   </div>
+  <script>
+    const machineId = {{ machine.id }};
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+  </script>
+  <script src="{% static 'js/machine_info.js' %}"></script>
 </body>
 </html>

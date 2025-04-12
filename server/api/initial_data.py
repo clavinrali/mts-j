@@ -47,6 +47,35 @@ def create_initial_data():
     for machine_data in initial_machines:
         Machine.objects.get_or_create(**machine_data)
 
+    # Initial warnings
+    initial_warnings = [
+        {"code": "LOW_PAINT", "description": "Low Paint Level"},
+        {"code": "BLADE_MISALIGN", "description": "Blade Misalignment"},
+        {"code": "OVERHEAT", "description": "Overheating"},
+        {"code": "MAINT_REQ", "description": "Maintenance Required"},
+    ]
+    warning_objects = {}
+    for warning_data in initial_warnings:
+        warning, _ = Warning.objects.get_or_create(**warning_data)
+        warning_objects[warning.code] = warning
+
+    # Assign supported warnings to machines
+    for machine in Machine.objects.all():
+        if machine.unique_machine_id == "PM-001":  # Paint Machine
+            machine.supported_warnings.add(warning_objects["LOW_PAINT"])
+        elif machine.unique_machine_id == "CM-002":  # Cutting Machine
+            machine.supported_warnings.add(warning_objects["BLADE_MISALIGN"])
+        elif machine.unique_machine_id == "FM-003":  # Fire Machine
+            machine.supported_warnings.add(warning_objects["OVERHEAT"])
+        elif machine.unique_machine_id == "SM-004":  # Shaping Machine
+            machine.supported_warnings.add(warning_objects["MAINT_REQ"])
+        machine.save()
+
+    # Assign active warnings to machines
+    for machine in Machine.objects.filter(status="warning"):
+        if machine.unique_machine_id == "SM-004":  # Example: Shaping Machine
+            machine.active_warnings.add(warning_objects["MAINT_REQ"])
+        machine.save()
 
     # Initial cases
     initial_cases = [
@@ -69,23 +98,13 @@ def create_initial_data():
     ]
     for case_data in initial_cases:
         if case_data["technician_id"] and case_data["machine_id"]:  # Ensure both IDs are valid
-            Case.objects.get_or_create(**case_data)
-
-    # Initial warnings
-    initial_warnings = [
-        {"status": "Low Paint Level"},
-        {"status": "Blade Misalignment"},
-        {"status": "Overheating"},
-        {"status": "Maintenance Required"},
-    ]
-    warning_objects = {}
-    for warning_data in initial_warnings:
-        warning, _ = Warning.objects.get_or_create(**warning_data)
-        warning_objects[warning.status] = warning
-
-    # Assign warnings to machines with status "warning"
-    for machine in Machine.objects.filter(status="warning"):
-        if machine.unique_machine_id == "SM-004":  # Example: Shaping Machine
-            machine.current_warnings.add(warning_objects["Maintenance Required"])
-        # Add other conditions for specific machines if needed
-        machine.save()
+            Case.objects.get_or_create(
+                title=case_data["title"],
+                technician_id=case_data["technician_id"],
+                machine_id=case_data["machine_id"],
+                defaults={
+                    "technician_note": case_data["technician_note"],
+                    "repair_note": case_data["repair_note"],
+                    "active": case_data["active"],
+                }
+            )

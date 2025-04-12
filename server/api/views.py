@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 import json
-from .models import Case, Machine, Comment, Task
+from .models import Case, Machine, Comment, Task, Warning
 
 def index(request):
     ctx = {}
@@ -119,7 +119,10 @@ def get_machines(request):
                          "assigned": machine.person.username if machine.person else None,
                          "status": machine.status,
                          "current_case": machine.current_case.id if machine.current_case else None,
-                         "current_warnings": [warning.status for warning in machine.current_warnings.all()]} 
+                         "active_warnings": [{"code": warning.code, "description": warning.description} 
+                                             for warning in machine.active_warnings.all()],
+                         "supported_warnings": [{"code": warning.code, "description": warning.description} 
+                                                for warning in machine.supported_warnings.all()]}
                         for machine in machines]
         return JsonResponse({"success": True, "message": machine_list}, safe=False, status=200)
 
@@ -136,6 +139,7 @@ def create_machine(request):
         last_service = data.get("last_service")
         manufacturer = data.get("manufacturer")
         unique_machine_id = data.get("unique_machine_id")
+        supported_warnings = data.get("supported_warnings", [])
 
         # check if machine already exists
         if Machine.objects.filter(unique_machine_id=unique_machine_id).exists():
@@ -152,6 +156,15 @@ def create_machine(request):
             unique_machine_id=unique_machine_id
         )
         machine.save()
+
+        # Add supported warnings to the machine
+        if supported_warnings:
+            for warning_data in supported_warnings:
+                code = warning_data.get("code", "").strip()
+                description = warning_data.get("description", "").strip()
+                if code and description:
+                    warning, created = Warning.objects.get_or_create(code=code, defaults={"description": description})
+                    machine.supported_warnings.add(warning)
 
         return JsonResponse({"success": True, "message": "Machine created successfully"}, status=201)
     return JsonResponse({"success": False, "message": "Invalid request"}, status=400)
@@ -215,22 +228,32 @@ def delete_machine(request, mid):
 
     return JsonResponse({"success": False, "message": "Invalid request"}, status=400)
 
-def add_warning(request, mid):
+def set_warning(request, mid):
     if request.method == 'POST':
         # get machine
-        machine = Machine.objects.get(id=mid)
-        # create warning
+        try:
+            machine = Machine.objects.get(id=mid)
+        except Machine.DoesNotExist:
+            return JsonResponse({"success": False, "message": "Machine not found"}, status=404)
+
+        # get data from request
         data = json.loads(request.body)
-        status = data.get("status")
+        warning_id = data.get("warning_id")
 
-        # check if warning already exists
-        if Warning.objects.filter(status=status).exists():
-            return JsonResponse({"success": False, "message": "Warning already exists"}, status=400)
+        # validate warning ID
+        try:
+            warning = Warning.objects.get(id=warning_id)
+        except Warning.DoesNotExist:
+            return JsonResponse({"success": False, "message": "Warning not found"}, status=404)
 
-        # create warning
-        warning = Warning.objects.create(status=status)
-        machine.warnings.add(warning)
-        # set machine status to warning
+        # check if warning is in supported warnings
+        if not machine.supported_warnings.filter(id=warning_id).exists():
+            return JsonResponse({"success": False, "message": "Warning not supported by this machine"}, status=400)
+
+        # add warning to active warnings
+        machine.active_warnings.add(warning)
+
+        # update machine status
         machine.status = "warning"
         machine.save()
 
@@ -241,18 +264,24 @@ def add_warning(request, mid):
 def delete_warning(request, mid, wid):
     if request.method == 'DELETE':
         # get machine
-        machine = Machine.objects.get(id=mid)
-        # get warning
-        warning = Warning.objects.get(id=wid)
-        # delete warning
-        machine.warnings.remove(warning)
+        try:
+            machine = Machine.objects.get(id=mid)
+        except Machine.DoesNotExist:
+            return JsonResponse({"success": False, "message": "Machine not found"}, status=404)
 
-        # check if machine has warnings
-        if (machine.warnings.count() > 0):
-            # set machine status to warning
+        # get warning
+        try:
+            warning = Warning.objects.get(id=wid)
+        except Warning.DoesNotExist:
+            return JsonResponse({"success": False, "message": "Warning not found"}, status=404)
+
+        # remove warning
+        machine.active_warnings.remove(warning)
+
+        # update machine status
+        if machine.active_warnings.exists():
             machine.status = "warning"
         else:
-            # set machine status to ok
             machine.status = "ok"
         machine.save()
 
@@ -298,12 +327,18 @@ def create_case(request):
         if Case.objects.filter(title=title).exists():
             return JsonResponse({"success": False, "message": "Case already exists"}, status=400)
 
-        # get person and machine
-        person = User.objects.get(id=id_technician)
+        # get technician and machine
+        technician = User.objects.get(id=id_technician)
         machine = Machine.objects.get(id=id_machine)
 
         # create case
-        case = Case.objects.create(person=person, machine=machine, title=title, technician_note=technician_note, technician_image=technician_image)
+        case = Case.objects.create(
+            technician=technician,
+            machine=machine,
+            title=title,
+            technician_note=technician_note,
+            technician_image=technician_image
+        )
         case.active = True
         case.save()
 
@@ -335,12 +370,13 @@ def case_close(request, cid):
         # update machine status
         machine = case.machine
 
-        if (machine.warnings.count() > 0):
+        if machine.active_warnings.count() > 0:
             # set machine status to warning
             machine.status = "warning"
         else:
             # set machine status to ok
-            machine.current_case = "ok"
+            machine.status = "ok"
+        machine.current_case = None
         machine.person = None
         machine.save()
 
@@ -395,3 +431,37 @@ def set_task(request):
         return JsonResponse({"success": True, "message": "Task assigned successfully"}, status=201)
 
     return JsonResponse({"success": False, "message": "Invalid request"}, status=400)
+
+def active_warnings(request, mid):
+    if request.method == 'GET':
+        try:
+            machine = Machine.objects.get(id=mid)
+        except Machine.DoesNotExist:
+            return JsonResponse({"success": False, "message": "Machine not found"}, status=404)
+
+        warnings = [{"id": warning.id, "code": warning.code, "description": warning.description}
+                    for warning in machine.active_warnings.all()]
+        return JsonResponse({"success": True, "warnings": warnings}, status=200)
+
+    return JsonResponse({"success": False, "message": "Invalid request method"}, status=400)
+
+@csrf_exempt
+def change_machine_status(request, mid):
+    if request.method == 'POST':
+        try:
+            machine = Machine.objects.get(id=mid)
+        except Machine.DoesNotExist:
+            return JsonResponse({"success": False, "message": "Machine not found"}, status=404)
+
+        data = json.loads(request.body)
+        new_status = data.get("status")
+
+        if new_status not in dict(Machine.STATUS_CHOICES):
+            return JsonResponse({"success": False, "message": "Invalid status"}, status=400)
+
+        machine.status = new_status
+        machine.save()
+
+        return JsonResponse({"success": True, "message": "Machine status updated successfully"}, status=200)
+
+    return JsonResponse({"success": False, "message": "Invalid request method"}, status=400)
