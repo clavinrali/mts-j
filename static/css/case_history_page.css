@@ -1,0 +1,134 @@
+/* body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+.container {
+    width: 80%;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.home-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.manager-tag {
+    background-color: #e7e7e7;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+h1 {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.case-list {
+    margin-top: 20px;
+}
+
+.case-item {
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin: 5px 0;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+} */
+
+
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 90%;
+    margin: 30px auto;
+    padding: 25px;
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.home-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.home-button:hover {
+    background-color: #0056b3;
+}
+
+.manager-tag {
+    background-color: #e2e6ea;
+    color: #333;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+h1 {
+    text-align: center;
+    margin: 25px 0 15px;
+    font-size: 26px;
+    color: #333;
+}
+
+.case-list {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.case-item {
+    padding: 14px 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9fbff;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background 0.2s ease;
+    cursor: pointer;
+}
+
+.case-item:hover {
+    background-color: #e6f0ff;
+    border-color: #007bff;
+}

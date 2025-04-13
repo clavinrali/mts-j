@@ -1,0 +1,246 @@
+.main-content {
+    display: flex; /* Use flexbox to align children horizontally */
+    flex-direction: row; /* Ensure horizontal alignment */
+    gap: 10px; /* Add spacing between panels */
+    padding: 20px;
+}
+
+.left-panel {
+    width: 95%; /* Set width relative to the container */
+    display: inline-block; /* Ensure it stays inline with the right panel */
+}
+
+.right-panel {
+    width: 20%; /* Set width relative to the container */
+    background-color: #c7c7c7; /* Light gray background */
+    border-radius: 8px;
+    border-left: 1px solid #cccccc; /* Light gray border */
+    border-top: 1px solid #cccccc;
+    display: flex;
+    flex-direction: column; /* Ensure children are stacked vertically */
+    align-items: flex-start; /* Align items to the top */
+    justify-content: flex-start; /* Align items to the top */
+    padding: 10px;
+}
+
+.control-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 10px;
+    max-width: 1200px; /* Match dashboard-container width */
+    padding: 10px;
+    background-color: #ffffff; /* Same background as dashboard-container */
+    border: 1px solid #cccccc; /* Same border as dashboard-container */
+    border-radius: 8px; /* Same rounded corners */
+    margin-bottom: 10px; /* Add spacing below */
+}
+
+.item-container-panel {
+    width: 180px;
+    background-color: #ffffff; /* White background */
+    border: 1px solid #cccccc; /* Light gray border */
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    position: relative; /* Change to relative to avoid conflicting with flex alignment */
+    top: 0; /* Ensure it stays at the top */
+    margin-top: 0; /* Remove any unintended margin */
+}
+
+.item-container-panel h3{
+    margin: 0; /* Remove default margin */
+    font-size: 20px;
+    font-weight: bold;
+    color: #000000; /* Black text for contrast */
+}
+
+.item-container-panel button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff; /* Blue button color */
+    color: #ffffff; /* White text */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.item-container-panel button:hover {
+    background-color: #0056b3; /* Darker blue for hover effect */
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end; /* Align buttons to the right */
+    gap: 35px; /* Add spacing between buttons */
+}
+
+.button-container button {
+    background-color: #e55a00; /* Blue button color */
+    color: #ffffff; /* White text */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 10px 15px;
+}
+
+.button-container button:hover {
+    background-color: #0056b3;
+}
+
+.button-container button:active {
+    background-color: #003f7f; /* Even darker blue on click */
+}
+
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    max-width: 1200px; /* Match machinery-panel width */
+    padding: 20px; /* Add padding for spacing */
+    background-color: #5c5c5c; /* Optional: Add a background for better visibility */
+    border: 1px solid #cccccc; /* Optional: Add a border for consistency */
+    border-radius: 8px; /* Optional: Add rounded corners */
+}
+
+.machine-filter-panel {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    margin-bottom: 10px;
+    max-width: 1200px; /* Match machinery-panel width */
+    padding: 10px; /* Add padding for consistency */
+    background-color: #f4f4f4; /* Optional: Add a background for better visibility */
+    border: 1px solid #cccccc; /* Optional: Add a border for consistency */
+    border-radius: 8px; /* Optional: Add rounded corners */
+}
+
+.machine-filter-panel h2 {
+    margin: 5px; /* Remove default margin */
+    font-weight: bold;
+    color: #000000; /* Black text for contrast */
+}
+
+.machinery-list {
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.machinery-panel {
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #cccccc; /* Light gray border */
+    border-radius: 8px;
+    padding: 10px;
+    background-color: #cacaca; /* Light gray for better contrast with white */
+    max-width: 1200px; /* Restrict the width */
+    margin: 0; /* Remove centering */
+}
+
+.machinery-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff; /* Blue background for machinery items */
+    padding: 10px; /* Reduced padding */
+    border-radius: 8px;
+    color: #000000; /* White text for contrast */
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    font-size: 16px; /* Slightly smaller font size */
+    font-weight: bold;
+}
+
+.machinery-item:hover {
+    background-color: #d5ebff; /* Light blue background on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Slightly stronger shadow */
+    cursor: pointer; /* Change cursor to pointer */
+}
+
+.machine-details {
+    flex: 2; /* Allocate more space to machine-details */
+    text-align: left; /* Align text to the left */
+    padding: 5px; /* Reduced padding for sections */
+    font-size: 14px; /* Smaller font size for details */
+}
+
+.machine-details p{
+    margin: 0; /* Remove default margin */
+    font-weight: bold; /* Make the text bold */
+}
+
+.machine-model {
+    font-size: 18px; /* Make the model text larger */
+    color: #0000a1; /* Black text for contrast */
+    font-weight: bold; /* Ensure it stands out */
+    margin-bottom: 5px; /* Add spacing below */
+}
+
+.issue-details {
+    flex: 1; /* Allocate less space to issue-details */
+    text-align: center; /* Center align issue details */
+    color: #ff0000; /* Highlight issues in red */
+    padding: 5px; /* Reduced padding for sections */
+    font-size: 14px; /* Smaller font size for details */
+}
+
+.machinery-buttons {
+    flex: 1; /* Allocate less space to machinery-buttons */
+    display: flex;
+    justify-content: flex-end; /* Align buttons to the right */
+    gap: 40px; /* Reduced gap between buttons */
+    padding: 5px; /* Reduced padding for sections */
+}
+
+.issue-box {
+    border: 1px solid #ff0000; /* Red border to highlight issues */
+    background-color: #ffe6e6; /* Light red background for visibility */
+    padding: 5px; /* Add padding inside the box */
+    border-radius: 5px; /* Rounded corners for the box */
+    font-size: 14px; /* Match font size with other details */
+    text-align: left; /* Align text to the left */
+}
+
+.issue-box p {
+    margin: 5px; /* Remove default margin */
+    font-weight: bold; /* Make the issue text bold */
+}
+
+/* Status indicator styles */
+.status-indicator {
+    padding: 10px 15px;
+    font-size: 14px;
+    border: 3px solid #000000;
+    width: 60px;
+    cursor: default; /* No pointer cursor for status */
+}
+
+#ok-status {
+    background-color: green;
+    color: #ffffff;
+    text-align: center;
+    border-radius: 5px;
+}
+
+#warning-status {
+    background-color: #fff200;
+    color: #000000;
+    text-align: center;
+    border-radius: 5px;
+}
+
+#fault-status {
+    background-color: red;
+    color: #ffffff;
+    text-align: center;
+    border-radius: 5px;
+}

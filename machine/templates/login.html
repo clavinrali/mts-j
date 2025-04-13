@@ -1,20 +1,23 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="static/css/style_login.css">
+    <link rel="stylesheet" href="{% static 'css/style_login.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style_base.css' %}">
 </head>
 <body>
     <div class="container">
-        <h2>ACME</h2>
-        <h3>Machine Tracking System</h3>
-        <form method="POST"  action="">
-            <h5>Login</h5>
-            <input type="text" id="username" name="username" placeholder="Username" required>
-            <input type="password" id="password" name="password" placeholder="Password" required>
-            <button type="submit" id="loginBtn">Sign In</button>
+        <h2 class="brand">ACME</h2>
+        <h3 class="subtitle">Machine Tracking System</h3>
+        <form method="POST" action="{% url 'machine:login' %}">
+            {% csrf_token %}
+            <h5 class="form-title">Login</h5>
+            <input type="text" id="username" name="username" placeholder="Username" required class="input-field">
+            <input type="password" id="password" name="password" placeholder="Password" required class="input-field">
+            <button type="submit" id="loginBtn" class="btn-submit">Sign In</button>
         </form>
     </div>
 </body>
