@@ -25,4 +25,5 @@ urlpatterns = [
     path("case/<int:cid>/close/", views.case_close, name="case_close"), #
     path("case/<int:cid>/add_comment/", views.add_comment, name="add_comment"), # Add Comment Page ***
     path("task/set/", views.set_task, name="set_task"), # Assign Task
+    path("tasks/assigned/", views.get_assigned_tasks, name="get_assigned_tasks"), # Fetch tasks assigned to current user
 ]

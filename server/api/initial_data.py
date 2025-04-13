@@ -1,5 +1,5 @@
 def create_initial_data():
-    from .models import Machine, Warning, Case, User  # Moved imports here to avoid circular import
+    from .models import Machine, Warning  # Moved imports here to avoid circular import
 
     # Initial machines
     initial_machines = [
@@ -9,7 +9,7 @@ def create_initial_data():
             "model": "CAT",
             "location": "Warehouse A",
             "last_service": "2023-01-01",
-            "status": "fault",
+            "status": "ok",
             "manufacturer": "Caterpillar Inc.",
             "unique_machine_id": "PM-001"
         },
@@ -29,7 +29,7 @@ def create_initial_data():
             "model": "Liebherr",
             "location": "Site C",
             "last_service": "2023-03-01",
-            "status": "fault",
+            "status": "ok",
             "manufacturer": "Liebherr Group",
             "unique_machine_id": "FM-003"
         },
@@ -76,35 +76,3 @@ def create_initial_data():
         if machine.unique_machine_id == "SM-004":  # Example: Shaping Machine
             machine.active_warnings.add(warning_objects["MAINT_REQ"])
         machine.save()
-
-    # Initial cases
-    initial_cases = [
-        {
-            "title": "Paint Machine Repair",
-            "technician_note": "Replace paint nozzle.",
-            "repair_note": "Nozzle replaced successfully.",
-            "active": True,
-            "technician_id": User.objects.filter(username="technician1").first().id if User.objects.filter(username="technician1").exists() else None,  # Check user existence
-            "machine_id": Machine.objects.filter(unique_machine_id="PM-001").first().id if Machine.objects.filter(unique_machine_id="PM-001").exists() else None,  # Check machine existence
-        },
-        {
-            "title": "Cutting Machine Maintenance",
-            "technician_note": "Check blade alignment.",
-            "repair_note": "Blade aligned properly.",
-            "active": False,
-            "technician_id": User.objects.filter(username="technician2").first().id if User.objects.filter(username="technician2").exists() else None,  # Check user existence
-            "machine_id": Machine.objects.filter(unique_machine_id="CM-002").first().id if Machine.objects.filter(unique_machine_id="CM-002").exists() else None,  # Check machine existence
-        },
-    ]
-    for case_data in initial_cases:
-        if case_data["technician_id"] and case_data["machine_id"]:  # Ensure both IDs are valid
-            Case.objects.get_or_create(
-                title=case_data["title"],
-                technician_id=case_data["technician_id"],
-                machine_id=case_data["machine_id"],
-                defaults={
-                    "technician_note": case_data["technician_note"],
-                    "repair_note": case_data["repair_note"],
-                    "active": case_data["active"],
-                }
-            )

@@ -1,13 +1,55 @@
 {% extends "base_dashboard.html" %}
 {% load static %}
 
-{% block title %}{{ request.user.profile.role }} Dashboard{% endblock %}
+{% block extra_css %}
+<style>
+    .task-list-container {
+        margin-top: 20px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #ffffff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .task-list {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+    .task-item {
+        margin-bottom: 15px;
+        padding: 15px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        background-color: #f8f9fa;
+        transition: background-color 0.3s ease;
+    }
+    .task-item:hover {
+        background-color: #e9ecef;
+    }
+    .task-container {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+    .task-container span {
+        font-size: 14px;
+        color: #333;
+    }
+    .task-container span:first-child {
+        font-weight: bold;
+        font-size: 16px;
+    }
+    .task-list-container h3 {
+        margin-bottom: 15px;
+        font-size: 18px;
+        color: #555;
+    }
+</style>
+{% endblock %}
+
 
 {% block control_container %}
-<div class="item-container-panel">
-    <h3>Task History</h3>
-    <button id="option1-button">Add New Machine</button>
-</div>
 <div class="item-container-panel">
     <h3>{{ request.user.profile.role }} Controls</h3>
     <button id="option2-button">View Case History</button>
@@ -16,15 +58,16 @@
 
 {% block control_button_container %}
 <button id="filter-button">Filter</button>
-<button id="export-button">Export</button>
 {% endblock %}
 
 
 {% block right_panel_container %} 
-<div class="notifications">
-    <h3>Notifications</h3>
-    <ul class="notification-list">
-        <li class="notification-item">No new notifications</li>
+<div class="task-list-container">
+    <h3>Task List</h3>
+    <ul class="task-list">
+        <li class="task-item">
+            <div class="task-container">No new Task</div>
+        </li>
     </ul>
 </div>
 {% endblock %}
@@ -35,7 +78,7 @@
 {% if request.user.profile.role == "Technician" %}
 <script src="{% static 'js/script_technician.js' %}"></script>
 {% elif request.user.profile.role == "Repair" %}
-<script src="{% static 'js/script_repairperson.js' %}"></script>
+<script src="{% static 'js/script_repair.js' %}"></script>
 {% else %}
 <script src="{% static 'js/script_maindash.js' %}"></script>
 {% endif %}

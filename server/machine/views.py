@@ -46,3 +46,17 @@ def machine_info_page(request, mid):
         })
     except Machine.DoesNotExist:
         return render(request, "404.html", {"message": "Machine not found"}, status=404)
+
+def case_creation_page(request, mid):
+    if request.user.is_authenticated:
+        try:
+            machine = Machine.objects.get(id=mid)
+            return render(request, "case_creation_page.html", {"machine": machine})
+        except Machine.DoesNotExist:
+            return render(request, "404.html", {"message": "Machine not found"}, status=404)
+    return redirect('machine:login')
+
+def statistics_page(request):
+    if request.user.is_authenticated:
+        return render(request, "statistics.html")
+    return redirect('machine:login')

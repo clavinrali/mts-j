@@ -11,12 +11,9 @@
 }
 
 .right-panel {
-    height: -100%;
     width: 20%; /* Set width relative to the container */
-    position: relative; /* Change from absolute to relative for better responsiveness */
-    top: -20px ;
-    right: -1%;
     background-color: #c7c7c7; /* Light gray background */
+    border-radius: 8px;
     border-left: 1px solid #cccccc; /* Light gray border */
     border-top: 1px solid #cccccc;
     display: flex;

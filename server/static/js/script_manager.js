@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const currentUsername = document.getElementById('current-username').value;
     const userPanel = document.querySelector('.user-panel');
     const dropdownMenu = document.querySelector('.dropdown-menu');
 
@@ -68,6 +67,18 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => console.error('Error fetching machinery data:', error));
 });
 
+// Helper function to get CSRF token
+const getCSRFToken = () => {
+    const cookies = document.cookie.split(';');
+    for (let cookie of cookies) {
+        const [name, value] = cookie.trim().split('=');
+        if (name === 'csrftoken') {
+            return value;
+        }
+    }
+    return '';
+};
+
 // Create a custom dialog box
 const createDialogBox = (message) => {
     const dialog = document.createElement('div');
@@ -118,9 +129,42 @@ const createDialogBox = (message) => {
     dialog.querySelector('.assign-dialog').addEventListener('click', () => {
         const selectedRole = roleDropdown.value;
         const selectedValue = dialogDropdown.value;
-        console.log(`Assigned Role: ${selectedRole}, Assigned: ${selectedValue}`); // Replace with actual assignment logic
-        document.body.removeChild(dialog);
+        const creatorId = document.getElementById('current-username').value; // Get the value of the element
+        const machineId = dialog.getAttribute('data-machine-id'); // Retrieve machine ID from dialog attribute
+        
+        if (selectedValue && machineId) {
+            fetch('/api/task/set/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken() // Include CSRF token
+                },
+                body: JSON.stringify({
+                    creator_id: creatorId,
+                    assignee_id: selectedValue,
+                    machine_id: machineId,
+                    status: 'pending'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Task assigned successfully');
+                    document.body.removeChild(dialog);
+                } else {
+                    alert('Error assigning task: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error assigning task:', error);
+                alert('An error occurred while assigning the task.');
+            });
+        } else {
+            alert('Please select an employee and ensure the machine ID is valid.');
+        }
     });
+
+    return dialog;
 };
 
 // Function to create a delete dialog box
@@ -164,18 +208,6 @@ const createDeleteDialogBox = () => {
         document.body.removeChild(dialog);
     });
 
-    // Helper function to get CSRF token
-    const getCSRFToken = () => {
-        const cookies = document.cookie.split(';');
-        for (let cookie of cookies) {
-            const [name, value] = cookie.trim().split('=');
-            if (name === 'csrftoken') {
-                return value;
-            }
-        }
-        return '';
-    };
-
     // Delete button functionality
     dialog.querySelector('.delete-dialog').addEventListener('click', () => {
         const selectedMachineId = dialogDropdown.value;
@@ -210,7 +242,10 @@ const createDeleteDialogBox = () => {
 document.addEventListener('click', (event) => {
     if (event.target.classList.contains('assign-button')) {
         event.stopPropagation(); // Prevent machinery-item click event
-        createDialogBox('Select an option to assign:');
+        const machineryItem = event.target.closest('.machinery-item');
+        const machineId = machineryItem.getAttribute('data-id'); // Get machineId from data-id
+        const dialog = createDialogBox('Select an option to assign:');
+        dialog.setAttribute('data-machine-id', machineId); // Store machine ID in dialog
         return; // Exit to ensure no further processing
     }
 

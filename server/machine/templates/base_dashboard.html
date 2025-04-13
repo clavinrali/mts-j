@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Main Dashboard{% endblock %}</title>
+    <title>{{ request.user.profile.role }} Dashboard</title>
     <link rel="stylesheet" href="{% static 'css/style_base.css' %}">
     <link rel="stylesheet" href="{% static 'css/style_dashboard.css' %}">
     {% block extra_css %}{% endblock %}
@@ -51,6 +51,7 @@
         </main>
     </div>
     <input type="hidden" id="current-username" value="{{ request.user.username }}">
+    <input type="hidden" id="current-userid" value="{{ request.user.id }}">
     {% block userdashboard_script %} {% endblock %}
 </body>
 </html>

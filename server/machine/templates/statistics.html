@@ -1,10 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Machine Status Report</title>
-  <link rel="stylesheet" href="statistics_styles.css" />
+  <link rel="stylesheet" href="{% static 'css/statistics_styles.css' %}" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
@@ -123,7 +124,7 @@
       </div>
     </section>
 
-    <button class="back-btn" onclick="window.location.href='manager_dash.html'">Go Back to Dashboard</button>
+    <button class="back-btn" onclick="window.location.href='{% url 'machine:dashboard' %}'">Go Back to Dashboard</button>
   </main>
 
   <script>
