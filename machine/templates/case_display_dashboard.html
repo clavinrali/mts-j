@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Display Dashboard</title>
+    <link rel="stylesheet" href="./css/case_display_dashboard.css">
+</head>
+<body>
+    <div class="dashboard">
+        <header>
+            <h1>Case Display Dashboard</h1>
+            <div class="case-info">
+                <p><strong>Case:</strong> #141626</p>
+                <p><strong>Machine Name:</strong> Yellow Machine</p>
+                <p><strong>Machine ID:</strong> AF5551</p>
+                <p><strong>Model:</strong> Arista 332</p>
+            </div>
+            <div class="repair-person">
+                <p><strong>Repair Person:</strong> Lily Singh</p>
+            </div>
+        </header>
+
+        <main>
+            <h2>Title: Hole in Pipe</h2>
+
+            <section class="technician-note">
+                <h3>Technician Note</h3>
+                <p>There is a hole at the bottom side of the pipe, possibly due to high velocity impact of debris nearby.</p>
+                <img src="./images/pipehole.jpeg" alt="Hole in Pipe">
+            </section>
+
+            <section class="repair-note">
+                <h3>Repair Note</h3>
+                <textarea placeholder="Insert image description..."></textarea>
+                <button>Add Note</button>
+            </section>
+
+            <section class="comment-section">
+                <h3>Comment Section</h3>
+                <div class="manager-comment">
+                    <strong>Manager:</strong>
+                    <p>I think the hole is small.</p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <button class="close-case">Close Case</button>
+        </footer>
+    </div>
+</body>
+</html>

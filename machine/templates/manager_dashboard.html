@@ -1,0 +1,42 @@
+{% extends "base_dashboard.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/manager_dashboard.css' %}">
+{% endblock %}
+
+
+{% block control_container %}
+<div class="item-container-panel">
+    <h3>Inventory Control</h3>
+    <button id="add-machine-btn" onclick="window.location.href='{% url 'machine:new_machine' %}'">Add New Machine</button>
+    <button id="delete-machine-btn">Delete Machines</button>
+</div>
+<div class="item-container-panel">
+    <h3>{{ request.user.profile.role }} Controls</h3>
+    <button id="stat-btn" onclick="window.location.href='{% url 'machine:statistics' %}'">Statistics</button>
+    <button id="case-hist-btn">View Case History</button>
+</div>
+{% endblock %}
+
+
+{% block control_button_container %}
+<button id="filter-button">Filter</button>
+<button id="export-button">Export</button>
+{% endblock %}
+
+
+{% block right_panel_container %} 
+<div class="notifications">
+    <h3>Notifications</h3>
+    <ul class="notification-list">
+        <li class="notification-item">No new notifications</li>
+    </ul>
+</div>
+{% endblock %}
+
+
+
+{% block userdashboard_script %} 
+<script src="{% static 'js/script_manager.js' %}"></script>
+{% endblock %}

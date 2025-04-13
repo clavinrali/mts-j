@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Machine Info</title>
+  <link rel="stylesheet" href="{% static 'css/machine_info_styles.css' %}" />
+  <meta name="csrf-token" content="{{ csrf_token }}">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>Machine Information</h1>
+      <div class="user-bubble">{{ request.user.get_full_name }} - {{ request.user.profile.role }}</div>
+    </header>
+
+    <div class="content-grid">
+      <!-- Left Panel: Machine Details -->
+      <div class="card">
+        <div class="section-header">
+          <span>Machine Details</span>
+          {% if machine.current_case %}
+          <button class="btn" onclick="window.location.href='/api/case/{{ machine.current_case.id }}/'">View Case</button>
+          {% endif %}
+        </div>
+
+        <div class="machine-details">
+          <p><strong>Machine Name:</strong> {{ machine.name }}</p>
+          <p><strong>ID:</strong> {{ machine.unique_machine_id }}</p>
+          <p><strong>Model:</strong> {{ machine.model }}</p>
+          <p><strong>Manufacturer:</strong> {{ machine.manufacturer }}</p>
+          <p><strong>Location:</strong> {{ machine.location }}</p>
+          <p><strong>Last Service Date:</strong> {{ machine.last_service }}</p>
+          <p><strong>Status:</strong> <span id="{{ machine.status }}-status">{{ machine.status }}</span></p>
+        </div>
+
+        <div class="section-header" style="margin-top: 30px;">
+          <span>Warnings</span>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <select id="warning-select">
+              <option value="" disabled selected>Select a warning</option>
+              {% for warning in machine.supported_warnings.all %}
+              <option value="{{ warning.id }}">{{ warning.code }} - {{ warning.description }}</option>
+              {% empty %}
+              <option value="" disabled>No warnings available</option>
+              {% endfor %}
+            </select>
+            <button class="btn" onclick="setWarning()">Set</button>
+          </div>
+        </div>
+
+        <div class="active-warning-list">
+          {% for warning in warnings %}
+          {% if warning.is_active %}
+          <div class="warning-item">⚠️ {{ warning.status }}</div>
+          {% endif %}
+          {% empty %}
+          <p>No warnings available.</p>
+          {% endfor %}
+        </div>
+
+        <div class="section-header" style="margin-top: 30px;">
+          <span>Case History</span>
+        </div>
+        <div class="case-history">
+          {% for case in cases %}
+          <div class="case">Case #{{ case.id }} – {{ case.title }}</div>
+          {% empty %}
+          <p>No case history available.</p>
+          {% endfor %}
+        </div>
+
+        <div class="footer-buttons">
+          <button class="btn grey" onclick="window.location.href='{% url 'machine:dashboard' %}'">Go to Dashboard</button>
+          <button class="btn" onclick="window.location.href='{% url 'machine:case_creation_page' mid=machine.id %}'">Create Case</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const machineId = {{ machine.id }};
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+  </script>
+  <script src="{% static 'js/machine_info.js' %}"></script>
+</body>
+</html>

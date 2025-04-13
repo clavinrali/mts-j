@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ request.user.profile.role }} Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/style_base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style_dashboard.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <div class="dashboard">
+        <header class="header">
+            <div class="company-name">ACME Manufacturing Corp</div>
+            <div class="user-role-heading">{{ request.user.profile.role }} Dashboard</div>
+            <div class="user-panel">
+                <span class="user-name">{{ request.user.get_full_name }}</span>
+                <div class="user-bubble">
+                    {{ request.user.first_name|slice:":1" }}{{ request.user.last_name|slice:":1" }}
+                </div>
+                <div class="dropdown-menu">
+                    <ul>
+                        <li id="logout-item"><a href="{% url 'machine:logout' %}">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+        <main class="main-content">
+            <div class="left-panel">
+                <div class="control-container">
+                    {% block control_container %} {% endblock %}
+                </div>
+                <div class="dashboard-container">
+                    <div class="machine-filter-panel">
+                        <h2>Machinery Dashboard</h2>
+                        <div class="button-container">
+                            {% block control_button_container %} {% endblock %}
+                        </div>
+                    </div>
+                    <div class="machinery-panel">
+                        <div class="machinery-list" id="machinery-list">
+                            <!-- Machinery items will be dynamically loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="right-panel">
+                {% block right_panel_container %} {% endblock %}
+            </div>
+        </main>
+    </div>
+    <input type="hidden" id="current-username" value="{{ request.user.username }}">
+    <input type="hidden" id="current-userid" value="{{ request.user.id }}">
+    {% block userdashboard_script %} {% endblock %}
+</body>
+</html>
