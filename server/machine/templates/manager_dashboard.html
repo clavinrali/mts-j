@@ -1,8 +1,6 @@
 {% extends "base_dashboard.html" %}
 {% load static %}
 
-{% block title %}Manager Dashboard{% endblock %}
-
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/manager_dashboard.css' %}">
 {% endblock %}
@@ -16,7 +14,7 @@
 </div>
 <div class="item-container-panel">
     <h3>{{ request.user.profile.role }} Controls</h3>
-    <button id="stat-btn">Statistics</button>
+    <button id="stat-btn" onclick="window.location.href='{% url 'machine:statistics' %}'">Statistics</button>
     <button id="case-hist-btn">View Case History</button>
 </div>
 {% endblock %}

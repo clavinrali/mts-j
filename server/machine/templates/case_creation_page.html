@@ -1,9 +1,10 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/case_creation_page.css">
+    <link rel="stylesheet" href="{% static 'css/case_creation_page.css' %}">
     <title>Case Creation Page</title>
 </head>
 <body>
@@ -17,10 +18,10 @@
         </header>
 
         <section class="case-details">
-            <h2>Case: #141626</h2>
-            <p>Machine Name: Yellow Machine</p>
-            <p>Machine ID: AF5551</p>
-            <p>Model: Arista 332</p>
+            <h2>Case for Machine: {{ machine.name }}</h2>
+            <p>Machine ID: {{ machine.unique_machine_id }}</p>
+            <p>Model: {{ machine.model }}</p>
+            <p>Location: {{ machine.location }}</p>
         </section>
 
         <form class="case-form">
@@ -28,7 +29,7 @@
             <input type="text" id="title" placeholder="Hole in Pipe">
 
             <label for="notes">Notes:</label>
-            <textarea id="notes" rows="4">There is a hole at the bottom side of the pipe, possibly due to high velocity impact of debris nearby.</textarea>
+            <textarea id="notes" rows="4"></textarea>
             <button type="button" class="add-note">Add Note</button>
 
             <div class="image-upload">
@@ -40,6 +41,7 @@
 
             <button type="submit" class="submit-button">Submit Case</button>
         </form>
+        <button onclick="window.location.href='{% url 'machine:machine_info_page' mid=machine.id %}'" class="back-button">Back to Machine Info</button>
     </div>
 </body>
 </html>
