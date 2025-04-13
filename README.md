@@ -2,7 +2,7 @@
 
 ## Overview
 
-A full-stack django based framework for a factory machinery status and repair tracking system. This project is a group assignment for EEN1037 module
+A full-stack django based framework for a factory machinery status and repair tracking system. This project is a group assignment for EEN1037 module.
 
 ## Developing
 
@@ -83,6 +83,13 @@ if you want to create a super user to add some information with the Django inter
   Superuser created successfully.
   ```
 3. Verify with this URL `http://127.0.0.1:8000/admin/`
+
+## Functional Scenario
+
+This application is intended for enterprise use and will not be accessible via the Internet or to the general public. Since all users are pre-registered company employees, implementing a sign-up or registration feature is unnecessary. In typical enterprise environments, user onboarding is managed by an administrator through an LDAP service, which handles user provisioning and validation. The entry page of this application is a login page, so only a user with a valid account will be able to access the web application.
+
+> [!IMPORTANT]  
+> To test a valid scenario, use the admin portal to create at least 3 users and a corresponding profile for each
 
 ## Running as a Docker container
 
