@@ -13,12 +13,23 @@
     <div class="dashboard">
         <header class="header">
             <div class="company-name">ACME Manufacturing Corp</div>
-            <div class="user-role-heading">{{ request.user.profile.role }} Dashboard</div>
+                {% if request.user.is_staff %}
+                    <div class="user-role-heading">STAFF Dashboard</div>
+                {% else %}
+                    <div class="user-role-heading">{{ request.user.profile.role }} Dashboard</div>
+                {% endif %}
             <div class="user-panel">
-                <span class="user-name">{{ request.user.get_full_name }}</span>
-                <div class="user-bubble">
-                    {{ request.user.first_name|slice:":1" }}{{ request.user.last_name|slice:":1" }}
-                </div>
+                {% if request.user.is_staff %}
+                    <span class="user-name">Staff User</span>
+                    <div class="user-bubble">
+                        X
+                    </div>
+                {% else %}
+                    <span class="user-name">{{ request.user.get_full_name }}</span>
+                    <div class="user-bubble">
+                        {{ request.user.first_name|slice:":1" }}{{ request.user.last_name|slice:":1" }}
+                    </div>
+                {% endif %}
                 <div class="dropdown-menu">
                     <ul>
                         <li id="logout-item"><a href="{% url 'machine:logout' %}">Logout</a></li>
@@ -40,6 +51,19 @@
                     </div>
                     <div class="machinery-panel">
                         <div class="machinery-list" id="machinery-list">
+                            {% if request.user.is_staff %}
+                            <div class="err-infoa">
+                                Staff users do not need to access the dashboard like rest of the users.<br>
+                                <strong>Create New User and profile from the admin portal</strong><br>
+                                <a href="http://127.0.0.1:8000/admin">http://127.0.0.1:8000/admin</a><br><br>
+                                admin portal --> Users -->  ADD USER --> Enter all info, Username, 
+                                Password, First and last name, Groups --> SAVE<br><br>
+                                admin portal --> Profiles --> ADD PROFILE --> Select user --> DOB --> Role --> SAVE <br><br>
+
+                                <strong>DONE</strong><br>
+
+                            </div>
+                            {% endif %}
                             <!-- Machinery items will be dynamically loaded here -->
                         </div>
                     </div>
@@ -52,6 +76,22 @@
     </div>
     <input type="hidden" id="current-username" value="{{ request.user.username }}">
     <input type="hidden" id="current-userid" value="{{ request.user.id }}">
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const userPanel = document.querySelector('.user-panel');
+            const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+            userPanel.addEventListener('click', () => {
+                dropdownMenu.classList.toggle('open');
+            });
+    
+            document.addEventListener('click', (event) => {
+                if (!userPanel.contains(event.target)) {
+                    dropdownMenu.classList.remove('open');
+                }
+            });
+        });
+    </script>
     {% block userdashboard_script %} {% endblock %}
 </body>
 </html>

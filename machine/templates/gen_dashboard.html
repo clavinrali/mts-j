@@ -79,7 +79,5 @@
 <script src="{% static 'js/script_technician.js' %}"></script>
 {% elif request.user.profile.role == "Repair" %}
 <script src="{% static 'js/script_repair.js' %}"></script>
-{% else %}
-<script src="{% static 'js/script_maindash.js' %}"></script>
 {% endif %}
 {% endblock %}

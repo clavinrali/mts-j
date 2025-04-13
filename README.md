@@ -91,6 +91,14 @@ This application is intended for enterprise use and will not be accessible via t
 > [!IMPORTANT]  
 > To test a valid scenario, use the admin portal to create at least 3 users and a corresponding profile for each
 
+Follow the steps below,
+  ```
+admin portal --> Users -->  ADD USER --> Enter all info, Username,Password, First and last name, Groups --> SAVE
+  ```
+  ```
+admin portal --> Profiles --> ADD PROFILE --> Select user --> DOB --> Role --> SAVE
+  ```
+
 ## Running as a Docker container
 
 A sample Dockerfile is provided which will build and run the application.
